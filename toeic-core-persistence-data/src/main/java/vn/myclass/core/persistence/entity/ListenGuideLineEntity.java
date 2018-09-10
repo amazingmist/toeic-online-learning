@@ -6,9 +6,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "listenguideline")
-public class ListenGuideLine {
-    @Id     // mark as primary key
-    @GeneratedValue(strategy = GenerationType.IDENTITY)     // if primary key auto_increament
+public class ListenGuideLineEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer listenGuideLineId;
 
     @Column(name = "title")
@@ -24,10 +24,10 @@ public class ListenGuideLine {
     private Timestamp createdDate;
 
     @Column(name = "modifieddate")
-    private Timestamp modifieddate;
+    private Timestamp modifiedDate;
 
-    @OneToMany(mappedBy = "listenGuideLine", fetch = FetchType.LAZY)
-    private List<Comment> commentList;
+    @OneToMany(mappedBy = "listenGuideLineEntity", fetch = FetchType.LAZY)
+    private List<CommentEntity> commentEntityList;
 
     public Integer getListenGuideLineId() {
         return listenGuideLineId;
@@ -69,19 +69,19 @@ public class ListenGuideLine {
         this.createdDate = createdDate;
     }
 
-    public Timestamp getModifieddate() {
-        return modifieddate;
+    public Timestamp getModifiedDate() {
+        return modifiedDate;
     }
 
-    public void setModifieddate(Timestamp modifieddate) {
-        this.modifieddate = modifieddate;
+    public void setModifiedDate(Timestamp modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 
-    public List<Comment> getCommentList() {
-        return commentList;
+    public List<CommentEntity> getCommentEntityList() {
+        return commentEntityList;
     }
 
-    public void setCommentList(List<Comment> commentList) {
-        this.commentList = commentList;
+    public void setCommentEntityList(List<CommentEntity> commentEntityList) {
+        this.commentEntityList = commentEntityList;
     }
 }

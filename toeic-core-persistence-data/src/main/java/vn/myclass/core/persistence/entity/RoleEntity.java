@@ -5,18 +5,16 @@ import java.util.List;
 
 @Entity
 @Table(name = "role")
-public class Role {
-    @Id     // mark as primary key
-    @Column(name = "roleid")    // mapping with column in table
+public class RoleEntity {
+    @Id
+    @Column(name = "roleid")
     private short roleId;
 
     @Column(name = "name")
     private String name;
 
-    // one role to many user
-    // mappedBy is the same with @JoinColumn in User.java
-    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
-    private List<User> userList;
+    @OneToMany(mappedBy = "roleEntity", fetch = FetchType.LAZY)
+    private List<UserEntity> userEntityList;
 
     public short getRoleId() {
         return roleId;
@@ -34,11 +32,11 @@ public class Role {
         this.name = name;
     }
 
-    public List<User> getUserList() {
-        return userList;
+    public List<UserEntity> getUserEntityList() {
+        return userEntityList;
     }
 
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
+    public void setUserEntityList(List<UserEntity> userEntityList) {
+        this.userEntityList = userEntityList;
     }
 }

@@ -6,9 +6,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "user")
-public class User {
-    @Id     // mark as primary key
-    @GeneratedValue(strategy = GenerationType.IDENTITY)     // if primary key auto_increament
+public class UserEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
 
     @Column(name = "name")
@@ -23,12 +23,12 @@ public class User {
     @Column(name = "createddate")
     private Timestamp createdDate;
 
-    @ManyToOne  // many user to one role
-    @JoinColumn(name = "roleid")    // mapping with foreign key column in table
-    private Role role;
+    @ManyToOne
+    @JoinColumn(name = "roleid")
+    private RoleEntity roleEntity;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Comment> commentList;
+    @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
+    private List<CommentEntity> commentEntityList;
 
     public Integer getUserId() {
         return userId;
@@ -70,19 +70,19 @@ public class User {
         this.createdDate = createdDate;
     }
 
-    public Role getRole() {
-        return role;
+    public RoleEntity getRoleEntity() {
+        return roleEntity;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoleEntity(RoleEntity roleEntity) {
+        this.roleEntity = roleEntity;
     }
 
-    public List<Comment> getCommentList() {
-        return commentList;
+    public List<CommentEntity> getCommentEntityList() {
+        return commentEntityList;
     }
 
-    public void setCommentList(List<Comment> commentList) {
-        this.commentList = commentList;
+    public void setCommentEntityList(List<CommentEntity> commentEntityList) {
+        this.commentEntityList = commentEntityList;
     }
 }

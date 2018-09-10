@@ -28,6 +28,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
     protected Session getSession(){
         return HibernateUtil.getSessionFactory().openSession();
     }
+
     public List<T> findAll() {
         // TODO: change list = null when declare
         List<T> list = new ArrayList<T>();
