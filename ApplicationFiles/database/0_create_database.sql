@@ -1,1 +1,2 @@
-create database toeic_online_learning character set utf8;
+CREATE DATABASE toeic_online_learning CHARACTER SET utf8 COLLATE utf8_general_ci;
+

@@ -1,15 +1,17 @@
 package vn.myclass.core.common.utils;
 
+
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
 public class HibernateUtil {
-    private static final SessionFactory SESSION_FACTORY = buildSessionFactory();
+    private static final SessionFactory sessionFactory = buildSessionFactory();
 
-    public static SessionFactory buildSessionFactory() {
+    private static SessionFactory buildSessionFactory() {
         try {
+            // Create the SessionFactory from hibernate.cfg.xml
             // loads configuration and mappings
             Configuration configuration = new Configuration().configure();
             ServiceRegistry serviceRegistry
@@ -18,13 +20,15 @@ public class HibernateUtil {
 
             // builds a session factory from the service registry
             return configuration.buildSessionFactory(serviceRegistry);
-        } catch (Throwable e) {
-            System.out.println("Initial session factory failed");
-            throw new ExceptionInInitializerError(e);
+        }
+        catch (Throwable ex) {
+            // Make sure you log the exception, as it might be swallowed
+            System.err.println("Initial SessionFactory creation failed." + ex);
+            throw new ExceptionInInitializerError(ex);
         }
     }
 
     public static SessionFactory getSessionFactory() {
-        return SESSION_FACTORY;
+        return sessionFactory;
     }
 }

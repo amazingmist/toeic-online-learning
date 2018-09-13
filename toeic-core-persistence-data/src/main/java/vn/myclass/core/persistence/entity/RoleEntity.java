@@ -8,7 +8,7 @@ import java.util.List;
 public class RoleEntity {
     @Id
     @Column(name = "roleid")
-    private short roleId;
+    private Integer roleId;
 
     @Column(name = "name")
     private String name;
@@ -16,11 +16,11 @@ public class RoleEntity {
     @OneToMany(mappedBy = "roleEntity", fetch = FetchType.LAZY)
     private List<UserEntity> userEntityList;
 
-    public short getRoleId() {
+    public Integer getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(short roleId) {
+    public void setRoleId(Integer roleId) {
         this.roleId = roleId;
     }
 
