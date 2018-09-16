@@ -1,10 +1,6 @@
 package vn.myclass.core.data.daoimpl;
 
-import org.hibernate.HibernateException;
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
+import org.hibernate.*;
 import vn.myclass.core.common.utils.HibernateUtil;
 import vn.myclass.core.data.dao.GenericDao;
 
@@ -38,12 +34,10 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             Session session = this.getSession();
             transaction = session.beginTransaction();
 
-            /*//Change to hql query if possible
-            StringBuilder hql = new StringBuilder("from role");
+            StringBuilder hql = new StringBuilder("from ");
             hql.append(this.getPersistenceClass());
-            Query query = session.createQuery(hql.toString());*/
+            Query query = session.createQuery(hql.toString());
 
-            SQLQuery query = session.createSQLQuery("SELECT * FROM role");
             list = query.list();
             transaction.commit();
         }catch (HibernateException ex){
