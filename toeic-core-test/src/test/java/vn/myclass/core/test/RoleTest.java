@@ -24,7 +24,7 @@ public class RoleTest {
         roleDao.update(roleEntity);
     }
 
-    @Test
+//    @Test
     public void checkSave(){
         RoleDao roleDao = new RoleDaoImpl();
         RoleEntity roleEntity = new RoleEntity();
@@ -54,8 +54,7 @@ public class RoleTest {
     public void checkDelete(){
         RoleDao roleDao = new RoleDaoImpl();
         List<Integer> list = new ArrayList<Integer>();
-        list.add(1);
-        list.add(2);
+        list.add(3);
         roleDao.delete(list);
     }
 }
