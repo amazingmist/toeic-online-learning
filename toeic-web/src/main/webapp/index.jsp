@@ -1,2 +1,2 @@
 <%@include file="common/tablib.jsp"%>
-<c:redirect url="/home.html"></c:redirect>
+<c:redirect url="/login.html"></c:redirect>
