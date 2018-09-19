@@ -1,7 +1,8 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/tablib.jsp" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <html>
 <head>
+    <meta charset="utf-8"/>
     <title><dec:title default="Login page"></dec:title></title>
     <!-- bootstrap & fontawesome -->
     <link rel="stylesheet" href="<c:url value='/template/admin/css/bootstrap.min.css'/>"/>
@@ -20,7 +21,7 @@
         <div class="row">
             <div class="col-sm-10 col-sm-offset-1">
                 <div class="login-container">
-                    <%@include file="/common/login/header.jsp"%>
+                    <%@include file="/common/login/header.jsp" %>
                     <div class="position-relative">
                         <dec:body></dec:body>
                     </div>
@@ -53,7 +54,7 @@
 <script src="<c:url value='/template/admin/js/ace-elements.min.js'/>"></script>
 <script src="<c:url value='/template/admin/js/ace.min.js'/>"></script>
 <script type="text/javascript">
-    jQuery(function($) {
+    jQuery(function ($) {
         $('body').attr('class', 'login-layout blur-login');
         $('#id-text2').attr('class', 'white');
         $('#id-company-text').attr('class', 'light-blue');
