@@ -1,6 +1,8 @@
 package vn.myclass.core.data.daoimpl;
 
 import org.hibernate.*;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import vn.myclass.core.common.constant.CoreConstant;
 import vn.myclass.core.common.utils.HibernateUtil;
 import vn.myclass.core.data.dao.GenericDao;
@@ -30,10 +32,11 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         List<T> list;
         Session session = this.getSession();
         try {
-            StringBuilder hql = new StringBuilder("from ");
-            hql.append(this.getPersistenceClassName());
-            Query query = session.createQuery(hql.toString());
-            list = query.list();
+//            StringBuilder hql = new StringBuilder("from ");
+//            hql.append(this.getPersistenceClassName());
+//            Query query = session.createQuery(hql.toString());
+//            list = query.list();
+            list = session.createCriteria(this.persistenceClass).list();
         }catch (HibernateException ex){
             throw ex;
         }finally {
@@ -90,21 +93,32 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         List<T> list;
         Session session = this.getSession();
         try {
-            StringBuilder hql = new StringBuilder("from ");
-            hql.append(this.getPersistenceClassName());
+//            StringBuilder hql = new StringBuilder("from ");
+//            hql.append(this.getPersistenceClassName());
+//            if (property != null && value != null) {
+//                hql.append(" where ").append(property).append(" = :value ");
+//            }
+//            if (sortExpression != null && sortDirection != null){
+//                hql.append("order by ").append(sortExpression);
+//                hql.append(" ").append(sortDirection.equals(CoreConstant.SORT_ASC) ? "asc" : "desc");
+//            }
+//
+//            Query query = session.createQuery(hql.toString());
+//            if (value != null) {
+//                query.setParameter("value", value);
+//            }
+//            list = query.list();
+            Criteria cr = session.createCriteria(this.persistenceClass);
             if (property != null && value != null) {
-                hql.append(" where ").append(property).append(" = :value ");
+                cr.add(Restrictions.eq(property, value));
             }
             if (sortExpression != null && sortDirection != null){
-                hql.append("order by ").append(sortExpression);
-                hql.append(" ").append(sortDirection.equals(CoreConstant.SORT_ASC) ? "asc" : "desc");
+                Order order = sortDirection.equals(CoreConstant.SORT_ASC) ?
+                        Order.asc(sortExpression) : Order.desc(sortExpression);
+                cr.addOrder(order);
             }
 
-            Query query = session.createQuery(hql.toString());
-            if (value != null) {
-                query.setParameter("value", value);
-            }
-            list = query.list();
+            list = cr.list();
         }catch (HibernateException ex){
             throw ex;
         }
