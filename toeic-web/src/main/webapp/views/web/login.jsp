@@ -7,7 +7,6 @@
     <title>Login page</title>
 </head>
 <body>
-<div class="position-relative">
     <div id="login-box" class="login-box visible widget-box no-border">
         <div class="widget-body">
             <div class="widget-main">
@@ -22,16 +21,16 @@
                     <fieldset>
                         <label class="block clearfix">
                             <span class="block input-icon input-icon-right">
-                                <input type="text" class="form-control"
-                                       placeholder="Username"/>
+                                <%-- input name must the same with property in UserDTO --%>
+                                <input type="text" class="form-control" placeholder="Username" name="pojo.name"/>
                                 <i class="ace-icon fa fa-user"></i>
                             </span>
                         </label>
 
                         <label class="block clearfix">
                             <span class="block input-icon input-icon-right">
-                                <input type="password" class="form-control"
-                                       placeholder="Password"/>
+                                <%-- input name must the same with property in UserDTO --%>
+                                <input type="password" class="form-control" placeholder="Password" name="pojo.password"/>
                                 <i class="ace-icon fa fa-lock"></i>
                             </span>
                         </label>
@@ -44,7 +43,7 @@
                                 <span class="lbl"> Remember Me</span>
                             </label>
 
-                            <button type="button" class="width-35 pull-right btn btn-sm btn-primary">
+                            <button type="submit" class="width-35 pull-right btn btn-sm btn-primary">
                                 <i class="ace-icon fa fa-key"></i>
                                 <span class="bigger-110">Login</span>
                             </button>
@@ -109,15 +108,16 @@
                 <form>
                     <fieldset>
                         <label class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input type="email" class="form-control"
-                                                                   placeholder="Email"/>
-															<i class="ace-icon fa fa-envelope"></i>
-														</span>
+                            <span class="block input-icon input-icon-right">
+                                <input type="email" class="form-control"
+                                       placeholder="Email"/>
+                                <i class="ace-icon fa fa-envelope"></i>
+                            </span>
                         </label>
 
                         <div class="clearfix">
-                            <button type="button" class="width-35 pull-right btn btn-sm btn-danger">
+                            <button type="button"
+                                    class="width-35 pull-right btn btn-sm btn-danger">
                                 <i class="ace-icon fa fa-lightbulb-o"></i>
                                 <span class="bigger-110">Send Me!</span>
                             </button>
@@ -149,43 +149,40 @@
                 <form>
                     <fieldset>
                         <label class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input type="email" class="form-control"
-                                                                   placeholder="Email"/>
-															<i class="ace-icon fa fa-envelope"></i>
-														</span>
+                            <span class="block input-icon input-icon-right">
+                                <input type="email" class="form-control"
+                                       placeholder="Email"/>
+                                <i class="ace-icon fa fa-envelope"></i>
+                            </span>
                         </label>
 
                         <label class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control"
-                                                                   placeholder="Username"/>
-															<i class="ace-icon fa fa-user"></i>
-														</span>
+                            <span class="block input-icon input-icon-right">
+                                <input type="text" class="form-control"
+                                       placeholder="Username"/>
+                                <i class="ace-icon fa fa-user"></i>
+                            </span>
                         </label>
 
                         <label class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control"
-                                                                   placeholder="Password"/>
-															<i class="ace-icon fa fa-lock"></i>
-														</span>
+                            <span class="block input-icon input-icon-right">
+                                <input type="password" class="form-control"
+                                       placeholder="Password"/>
+                                <i class="ace-icon fa fa-lock"></i>
+                            </span>
                         </label>
 
                         <label class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control"
-                                                                   placeholder="Repeat password"/>
-															<i class="ace-icon fa fa-retweet"></i>
-														</span>
+                            <span class="block input-icon input-icon-right">
+                                <input type="password" class="form-control"
+                                       placeholder="Repeat password"/>
+                                <i class="ace-icon fa fa-retweet"></i>
+                            </span>
                         </label>
 
                         <label class="block">
                             <input type="checkbox" class="ace"/>
-                            <span class="lbl">
-															I accept the
-															<a href="#">User Agreement</a>
-														</span>
+                            <span class="lbl">I accept the<a href="#">User Agreement</a></span>
                         </label>
 
                         <div class="space-24"></div>
@@ -196,7 +193,8 @@
                                 <span class="bigger-110">Reset</span>
                             </button>
 
-                            <button type="button" class="width-65 pull-right btn btn-sm btn-success">
+                            <button type="button"
+                                    class="width-65 pull-right btn btn-sm btn-success">
                                 <span class="bigger-110">Register</span>
 
                                 <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
@@ -214,6 +212,5 @@
             </div>
         </div><!-- /.widget-body -->
     </div><!-- /.signup-box -->
-</div><!-- /.position-relative -->
 </body>
 </html>
