@@ -1,4 +1,6 @@
 package vn.myclass.core.service.impl;
 
-public class UserServiceImpl {
+import vn.myclass.core.service.UserService;
+
+public class UserServiceImpl implements UserService {
 }

@@ -20,7 +20,7 @@
         </dependency>
         <dependency>
             <groupId>vn.myclass</groupId>
-            <artifactId>toeic-core-web</artifactId>
+            <artifactId>toeic-web</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@include file="/common/tablib.jsp" %>
+<c:url var="formUrl" value="/login.html"/>
 <html>
 <head>
     <meta charset="utf-8"/>
@@ -17,22 +18,22 @@
 
                 <div class="space-6"></div>
 
-                <form>
+                <form action="${formUrl}" method="post">
                     <fieldset>
                         <label class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control"
-                                                                   placeholder="Username"/>
-															<i class="ace-icon fa fa-user"></i>
-														</span>
+                            <span class="block input-icon input-icon-right">
+                                <input type="text" class="form-control"
+                                       placeholder="Username"/>
+                                <i class="ace-icon fa fa-user"></i>
+                            </span>
                         </label>
 
                         <label class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control"
-                                                                   placeholder="Password"/>
-															<i class="ace-icon fa fa-lock"></i>
-														</span>
+                            <span class="block input-icon input-icon-right">
+                                <input type="password" class="form-control"
+                                       placeholder="Password"/>
+                                <i class="ace-icon fa fa-lock"></i>
+                            </span>
                         </label>
 
                         <div class="space"></div>

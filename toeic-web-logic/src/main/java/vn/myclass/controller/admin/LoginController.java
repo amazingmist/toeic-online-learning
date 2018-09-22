@@ -1,5 +1,7 @@
 package vn.myclass.controller.admin;
 
+import org.apache.log4j.Logger;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +11,7 @@ import java.io.IOException;
 
 @WebServlet(urlPatterns = "/login.html")
 public class LoginController extends HttpServlet {
+    private final Logger logger = Logger.getLogger(this.getClass());
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/views/web/login.jsp").forward(req, resp);
@@ -16,6 +19,6 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        req.getRequestDispatcher("/views/web/login.jsp").forward(req, resp);
     }
 }
