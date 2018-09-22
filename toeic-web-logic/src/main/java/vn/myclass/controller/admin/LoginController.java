@@ -1,6 +1,9 @@
 package vn.myclass.controller.admin;
 
 import org.apache.log4j.Logger;
+import vn.myclass.command.UserCommand;
+import vn.myclass.core.dto.UserDTO;
+import vn.myclass.core.web.utils.FormUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,6 +22,8 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        UserCommand command = FormUtil.populate(UserCommand.class, req);
+        UserDTO pojo = command.getPojo();
         req.getRequestDispatcher("/views/web/login.jsp").forward(req, resp);
     }
 }
