@@ -1,5 +1,6 @@
-package vn.myclass.controller.web;
+package vn.myclass.controller.admin;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -7,11 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = "/home.html")
-public class HomeController extends HttpServlet {
+@WebServlet("/admin-guideline-listen-list.html")
+public class ListenGuideLineController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/views/web/home.jsp").forward(req, resp);
+        RequestDispatcher rd = req.getRequestDispatcher("/views/admin/listenguideline/list.jsp");
+        rd.forward(req, resp);
     }
 
     @Override

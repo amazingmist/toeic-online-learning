@@ -34,18 +34,16 @@ public class LoginController extends HttpServlet {
             RoleDTO roleDTO = userService.findRoleByUser(pojo).getRoleDTO();
             if (roleDTO != null){
                 if (roleDTO.getName().equals(WebConstant.ROLE_ADMIN)){
-                    req.setAttribute(WebConstant.ALERT, WebConstant.TYPE_SUCCESS);
-                    req.setAttribute(WebConstant.MESSAGE_RESPONSE, "You are admin");
+                    resp.sendRedirect("/admin-home.html");
                 }else if (roleDTO.getName().equals(WebConstant.ROLE_USER)){
-                    req.setAttribute(WebConstant.ALERT, WebConstant.TYPE_SUCCESS);
-                    req.setAttribute(WebConstant.MESSAGE_RESPONSE, "You are user");
+                    resp.sendRedirect("/home.html");
                 }
             }
         }catch (NullPointerException e){
             logger.error(e.getMessage(), e);
             req.setAttribute(WebConstant.ALERT, WebConstant.TYPE_ERROR);
             req.setAttribute(WebConstant.MESSAGE_RESPONSE, "Username or password is invalid");
+            req.getRequestDispatcher("/views/web/login.jsp").forward(req, resp);
         }
-        req.getRequestDispatcher("/views/web/login.jsp").forward(req, resp);
     }
 }

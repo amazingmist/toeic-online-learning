@@ -6,3 +6,5 @@
 <%-- End resource bundle --%>
 
 <%@taglib prefix="dec" uri="http://www.opensymphony.com/sitemesh/decorator" %>
+
+<%@taglib prefix="display" uri="http://displaytag.sf.net" %>

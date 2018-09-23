@@ -1,4 +1,22 @@
-<div style="clear:both">
-    <hr/>
-    <p>Copyright  2010-2014 javatpoint.com.</p>
+<div class="footer">
+    <div class="footer-inner">
+        <div class="footer-content">
+         <span class="bigger-120">
+         <span class="blue bolder">Ace</span>
+         Application © 2013-2014
+         </span>
+            &nbsp; &nbsp;
+            <span class="action-buttons">
+         <a href="#">
+         <i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i>
+         </a>
+         <a href="#">
+         <i class="ace-icon fa fa-facebook-square text-primary bigger-150"></i>
+         </a>
+         <a href="#">
+         <i class="ace-icon fa fa-rss-square orange bigger-150"></i>
+         </a>
+         </span>
+        </div>
+    </div>
 </div>
