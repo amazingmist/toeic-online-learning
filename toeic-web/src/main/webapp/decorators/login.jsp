@@ -15,7 +15,7 @@
           id="main-ace-style"/>
     <dec:head></dec:head>
 </head>
-<body class="login-layout">
+<body class="login-layout blur-login">
 <div class="main-container">
     <div class="main-content">
         <div class="row">
@@ -61,11 +61,6 @@
             $('.widget-box.visible').removeClass('visible');//hide others
             $(target).addClass('visible');//show target
         });
-
-
-        $('body').attr('class', 'login-layout blur-login');
-        $('#id-text2').attr('class', 'white');
-        $('#id-company-text').attr('class', 'light-blue');
     });
 </script>
 </body>

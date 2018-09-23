@@ -23,6 +23,9 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
     public String getPersistenceClassName(){
         return this.persistenceClass.getSimpleName();
     }
+    public Class getPersistenceClass(){
+        return this.persistenceClass;
+    }
 
     protected Session getSession(){
         return HibernateUtil.getSessionFactory().openSession();
@@ -32,11 +35,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         List<T> list;
         Session session = this.getSession();
         try {
-//            StringBuilder hql = new StringBuilder("from ");
-//            hql.append(this.getPersistenceClassName());
-//            Query query = session.createQuery(hql.toString());
-//            list = query.list();
-            list = session.createCriteria(this.persistenceClass).list();
+            list = session.createCriteria(this.getPersistenceClass()).list();
         }catch (HibernateException ex){
             throw ex;
         }finally {
@@ -79,7 +78,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         Session session = this.getSession();
         try {
             // note: the first parameter is class type, so we pass persistenceClass at this situation
-            result = (T) session.get(this.persistenceClass, id);
+            result = (T) session.get(this.getPersistenceClass(), id);
             if (result == null){
                 throw new ObjectNotFoundException("NOT FOUND " + id, this.getPersistenceClassName());
             }
@@ -93,22 +92,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         List<T> list;
         Session session = this.getSession();
         try {
-//            StringBuilder hql = new StringBuilder("from ");
-//            hql.append(this.getPersistenceClassName());
-//            if (property != null && value != null) {
-//                hql.append(" where ").append(property).append(" = :value ");
-//            }
-//            if (sortExpression != null && sortDirection != null){
-//                hql.append("order by ").append(sortExpression);
-//                hql.append(" ").append(sortDirection.equals(CoreConstant.SORT_ASC) ? "asc" : "desc");
-//            }
-//
-//            Query query = session.createQuery(hql.toString());
-//            if (value != null) {
-//                query.setParameter("value", value);
-//            }
-//            list = query.list();
-            Criteria cr = session.createCriteria(this.persistenceClass);
+            Criteria cr = session.createCriteria(this.getPersistenceClass());
             if (property != null && value != null) {
                 cr.add(Restrictions.eq(property, value));
             }
@@ -131,7 +115,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         int countSuccess = 0;
         try {
             for (ID id: ids) {
-                Object object = session.get(this.persistenceClass, id);
+                Object object = session.get(this.getPersistenceClass(), id);
                 session.delete(object);
                 countSuccess++;
             }

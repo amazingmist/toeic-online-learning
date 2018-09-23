@@ -4,7 +4,7 @@
         <span class="red">Ace</span>
         <span class="white" id="id-text2">Application</span>
     </h1>
-    <h4 class="blue" id="id-company-text">&copy; Company Name</h4>
+    <h4 class="light-blue" id="id-company-text">&copy; Company Name</h4>
 </div>
 
 <div class="space-6"></div>
