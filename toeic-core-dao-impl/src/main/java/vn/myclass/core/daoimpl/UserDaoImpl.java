@@ -27,14 +27,14 @@ public class UserDaoImpl extends AbstractDao<Integer, UserEntity> implements Use
         return entity;
     }
 
-    public RoleEntity findRoleByUser(String name, String password) {
-        RoleEntity entity;
+    public UserEntity findRoleByUser(String name, String password) {
+        UserEntity entity;
         Session session = this.getSession();
         try {
             Criteria cr = session.createCriteria(this.getPersistenceClass());
             cr.add(Restrictions.eq("name", name));
             cr.add(Restrictions.eq("password", password));
-            entity = ((UserEntity) cr.uniqueResult()).getRoleEntity();
+            entity = (UserEntity) cr.uniqueResult();
         }catch (HibernateException e) {
             throw e;
         }finally {

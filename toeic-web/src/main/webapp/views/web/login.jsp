@@ -17,6 +17,13 @@
 
                 <div class="space-6"></div>
 
+                <c:if test="${not empty messageResponse}">
+                    <div class="alert alert-dismissible fade in alert-${alert}">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>${messageResponse}</strong>
+                    </div>
+                </c:if>
+
                 <form action="${formUrl}" method="post">
                     <fieldset>
                         <label class="block clearfix">
