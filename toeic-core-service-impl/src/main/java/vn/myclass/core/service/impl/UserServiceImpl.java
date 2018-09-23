@@ -10,13 +10,13 @@ import vn.myclass.core.utils.UserBeanUtil;
 public class UserServiceImpl implements UserService {
     public UserDTO isUserExist(UserDTO userDTO) {
         UserDao userDao = new UserDaoImpl();
-        UserEntity entity = userDao.isUserExist(userDTO.getName(), userDTO.getPassword());
+        UserEntity entity = userDao.findUserByNameAndPassword(userDTO.getName(), userDTO.getPassword());
         return UserBeanUtil.entity2Dto(entity);
     }
 
     public UserDTO findRoleByUser(UserDTO userDTO) {
         UserDao userDao = new UserDaoImpl();
-        UserEntity entity = userDao.findRoleByUser(userDTO.getName(), userDTO.getPassword());
+        UserEntity entity = userDao.findUserByNameAndPassword(userDTO.getName(), userDTO.getPassword());
         return UserBeanUtil.entity2Dto(entity);
     }
 }
