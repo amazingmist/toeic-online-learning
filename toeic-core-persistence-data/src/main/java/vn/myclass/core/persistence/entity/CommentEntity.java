@@ -22,7 +22,7 @@ public class CommentEntity {
 
     @ManyToOne
     @JoinColumn(name = "listenguidelineid")
-    private ListenGuideLineEntity listenGuideLineEntity;
+    private ListenGuidelineEntity listenGuideLineEntity;
 
     public Integer getCommentId() {
         return commentId;
@@ -56,11 +56,11 @@ public class CommentEntity {
         this.userEntity = userEntity;
     }
 
-    public ListenGuideLineEntity getListenGuideLineEntity() {
+    public ListenGuidelineEntity getListenGuideLineEntity() {
         return listenGuideLineEntity;
     }
 
-    public void setListenGuideLineEntity(ListenGuideLineEntity listenGuideLineEntity) {
+    public void setListenGuideLineEntity(ListenGuidelineEntity listenGuideLineEntity) {
         this.listenGuideLineEntity = listenGuideLineEntity;
     }
 }

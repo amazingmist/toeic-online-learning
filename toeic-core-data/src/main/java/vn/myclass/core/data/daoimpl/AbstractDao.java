@@ -88,7 +88,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         return result;
     }
 
-    public List<T> findByProperty(String property, Object value, String sortExpression, String sortDirection) {
+    public List<T> findByProperty(String property, Object value, String sortExpression, String sortDirection, Integer offset, Integer limit) {
         List<T> list;
         Session session = this.getSession();
         try {
@@ -100,6 +100,15 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
                 Order order = sortDirection.equals(CoreConstant.SORT_ASC) ?
                         Order.asc(sortExpression) : Order.desc(sortExpression);
                 cr.addOrder(order);
+            }
+
+//            set start position offset
+            if (offset != null && offset >= 0){
+                cr.setFirstResult(offset);
+            }
+//            set limit row
+            if (limit != null && limit > 0){
+                cr.setMaxResults(limit);
             }
 
             list = cr.list();

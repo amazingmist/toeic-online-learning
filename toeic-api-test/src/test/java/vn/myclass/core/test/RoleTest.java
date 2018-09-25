@@ -47,7 +47,9 @@ public class RoleTest {
         String value = null;
         String sortExpression = null;
         String sortDirection = null;
-        List<RoleEntity> list = roleDao.findByProperty(property, value, sortExpression, sortDirection);
+        Integer offset = null;
+        Integer limit = null;
+        List<RoleEntity> list = roleDao.findByProperty(property, value, sortExpression, sortDirection, offset, limit);
     }
 
 //    @Test

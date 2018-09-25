@@ -8,6 +8,6 @@ public interface GenericDao<ID extends Serializable, T> {
     void update(T entity);
     void save(T entity);
     T findById(ID id);
-    List<T> findByProperty(String property, Object value, String sortExpression, String sortDirection);
+    List<T> findByProperty(String property, Object value, String sortExpression, String sortDirection, Integer offset, Integer limit);
     Integer delete(List<ID> ids);
 }

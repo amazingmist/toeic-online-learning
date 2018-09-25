@@ -1,15 +1,33 @@
-package vn.myclass.core.dto;
+package vn.myclass.core.persistence.entity;
 
-import java.io.Serializable;
+import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
-public class ListenGuideLineDTO implements Serializable {
+@Entity
+@Table(name = "listenguideline")
+public class ListenGuidelineEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer listenGuideLineId;
+
+    @Column(name = "title")
     private String title;
+
+    @Column(name = "image")
     private String image;
+
+    @Column(name = "content")
     private String content;
+
+    @Column(name = "createddate")
     private Timestamp createdDate;
+
+    @Column(name = "modifieddate")
     private Timestamp modifiedDate;
+
+    @OneToMany(mappedBy = "listenGuideLineEntity", fetch = FetchType.LAZY)
+    private List<CommentEntity> commentEntityList;
 
     public Integer getListenGuideLineId() {
         return listenGuideLineId;
@@ -57,5 +75,13 @@ public class ListenGuideLineDTO implements Serializable {
 
     public void setModifiedDate(Timestamp modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    public List<CommentEntity> getCommentEntityList() {
+        return commentEntityList;
+    }
+
+    public void setCommentEntityList(List<CommentEntity> commentEntityList) {
+        this.commentEntityList = commentEntityList;
     }
 }
