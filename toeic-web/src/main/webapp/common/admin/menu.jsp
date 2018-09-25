@@ -31,8 +31,6 @@
                 <i class="menu-icon fa fa-headphones"></i>
                 <span class="menu-text">
                 <fmt:message key="label.guideline.listen" bundle="${lang}" />
-                <span class="badge badge-primary">5</span>
-                </span>
                 <b class="arrow fa fa-angle-down"></b>
             </a>
             <b class="arrow"></b>
