@@ -13,6 +13,10 @@ public class RoleTest {
     public void checkFindAll() {
         RoleDao roleDao = new RoleDaoImpl();
         List<RoleEntity> list = roleDao.findAll();
+        for (RoleEntity entity :
+                list) {
+            System.out.println(entity.getName());
+        }
     }
 
 //    @Test

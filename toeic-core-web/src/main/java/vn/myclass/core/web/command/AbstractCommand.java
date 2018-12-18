@@ -4,13 +4,18 @@ import java.util.List;
 
 public class AbstractCommand<T> {
     protected T pojo;
+
     private String crudAction;
+
 //    danh sach cac item se duoc do vo display table
     private List<T> listResult;
+
 //    tableId phai giong voi id cua table trong display table
     private String tableId = "tableList";
+
 //    So luong item hien thi moi page
     private int maxPageItems = 20;
+
     private int totalItems = 0;
     private int firstItem = 0;
     private String sortExpression;
