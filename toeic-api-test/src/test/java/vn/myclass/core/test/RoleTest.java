@@ -1,6 +1,5 @@
 package vn.myclass.core.test;
 
-import org.testng.annotations.Test;
 import vn.myclass.core.dao.RoleDao;
 import vn.myclass.core.daoimpl.RoleDaoImpl;
 import vn.myclass.core.persistence.entity.RoleEntity;
@@ -53,7 +52,7 @@ public class RoleTest {
         String sortDirection = null;
         Integer offset = null;
         Integer limit = null;
-        Object[] list = roleDao.findByProperty(property, value, sortExpression, sortDirection, offset, limit);
+//        Object[] list = roleDao.findByProperties(property, value, sortExpression, sortDirection, offset, limit);
     }
 
 //    @Test

@@ -1,6 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/tablib.jsp" %>
 <c:url var="requestURI" value="/admin-guideline-listen-list.html"></c:url>
+<c:url value='/admin-guideline-listen-edit.html' var="listenGuidelineEditUrl">
+    <c:param name="urlType" value="url_edit"></c:param>
+</c:url>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -58,6 +62,7 @@
             </div>
             <!-- /.page-header -->
             <div class="row">
+                <a href="${listenGuidelineEditUrl}" type="button">edit</a>
                 <div class="col-xs-12">
                     <!-- PAGE CONTENT BEGINS -->
                     <div class="table-responsive">

@@ -14,7 +14,7 @@ public class ListenGuidelineServiceImpl implements ListenGuidelineService {
     ListenGuidelineDao listenGuidelineDao = new ListenGuidelineDaoImpl();
 
     public Object[] findListenGuidelineByProperty(String property, Object value, String sortExpression, String sortDirection, Integer offset, Integer limit) {
-        Object[] finded = listenGuidelineDao.findByProperty(property, value, sortExpression, sortDirection, offset, limit);
+        /*Object[] finded = listenGuidelineDao.findByProperties(property, value, sortExpression, sortDirection, offset, limit);
         List<ListenGuidelineDTO> dtoList = new ArrayList<ListenGuidelineDTO>();
 
 //        convert entity list to dto
@@ -22,6 +22,7 @@ public class ListenGuidelineServiceImpl implements ListenGuidelineService {
             ListenGuidelineDTO dto = ListenGuidelineBeanUtil.entity2Dto(entity);
             dtoList.add(dto);
         }
-        return new Object[]{finded[0], dtoList};
+        return new Object[]{finded[0], dtoList};*/
+        return null;
     }
 }

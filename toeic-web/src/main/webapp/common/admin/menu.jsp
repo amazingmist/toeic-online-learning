@@ -1,3 +1,6 @@
+<c:url value='/admin-guideline-listen-list.html' var="listenGuidelineListUrl">
+    <c:param name="urlType" value="url_list"></c:param>
+</c:url>
 <div id="sidebar" class="sidebar responsive" data-sidebar="true" data-sidebar-scroll="true" data-sidebar-hover="true">
     <script type="text/javascript">
         try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
@@ -36,7 +39,7 @@
             <b class="arrow"></b>
             <ul class="submenu">
                 <li class="">
-                    <a href="<c:url value='/admin-guideline-listen-list.html'/>">
+                    <a href="${listenGuidelineListUrl}">
                         <i class="menu-icon fa fa-caret-right"></i>
                         <fmt:message key="label.guideline.listen" bundle="${lang}" />
                     </a>
