@@ -11,6 +11,7 @@ import vn.myclass.core.data.dao.GenericDao;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.Map;
 
 public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T> {
     private Class<T> persistenceClass;
@@ -89,7 +90,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         return result;
     }
 
-    public Object[] findByProperty(String property, Object value, String sortExpression, String sortDirection, Integer offset, Integer limit) {
+    public Object[] findByProperties(Map<String, Object> properties, String sortExpression, String sortDirection, Integer offset, Integer limit) {
         List<T> list;
         Long count;
         Session session = this.getSession();
@@ -97,8 +98,10 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             Criteria cr = session.createCriteria(this.getPersistenceClass());
 
 //            set condition for query
-            if (property != null && value != null) {
-                cr.add(Restrictions.eq(property, value));
+            if (properties != null) {
+                for (Map.Entry<String, Object> entry : properties.entrySet()) {
+                    cr.add(Restrictions.eq(entry.getKey(), entry.getValue()));
+                }
             }
 
 //            set sort direction
@@ -120,8 +123,17 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
 
             list = cr.list();
 
-//          count total of items
+//            count total of items
             Criteria cr2 = session.createCriteria(this.getPersistenceClass());
+
+//            set condition for query
+            if (properties != null) {
+                for (Map.Entry<String, Object> entry : properties.entrySet()) {
+                    cr2.add(Restrictions.eq(entry.getKey(), entry.getValue()));
+                }
+            }
+
+//            set result is a num row of list
             cr2.setProjection(Projections.rowCount());
             count = (Long) cr2.uniqueResult();
         }catch (HibernateException ex){
