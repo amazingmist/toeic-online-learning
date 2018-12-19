@@ -62,9 +62,18 @@
             </div>
             <!-- /.page-header -->
             <div class="row">
-                <a href="${listenGuidelineEditUrl}" type="button">edit</a>
+                <div class="col-xs-12">
+                    <a href="${listenGuidelineEditUrl}" type="button"><fmt:message key="label.guideline.listen.add"
+                                                                                   bundle="${lang}"/> </a>
+                </div>
                 <div class="col-xs-12">
                     <!-- PAGE CONTENT BEGINS -->
+                    <c:if test="${not empty messageResponse}">
+                        <div class="alert alert-dismissible fade in alert-${alert}">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>${messageResponse}</strong>
+                        </div>
+                    </c:if>
                     <div class="table-responsive">
                         <fmt:bundle basename="ApplicationRescources">
                             <display:table id="tableList" name="items.listResult" partialList="true"
@@ -73,8 +82,10 @@
                                            style="margin: 3em 0 1.5em;"
                                            sort="external"
                                            requestURI="${requestURI}">
-                                <display:column property="title" titleKey="label.guideline.title" sortable="true" sortName="title"/>
-                                <display:column property="content" titleKey="label.guideline.content" sortable="true" sortName="content"/>
+                                <display:column property="title" titleKey="label.guideline.title" sortable="true"
+                                                sortName="title"/>
+                                <display:column property="content" titleKey="label.guideline.content" sortable="true"
+                                                sortName="content"/>
                             </display:table>
                         </fmt:bundle>
                     </div>
