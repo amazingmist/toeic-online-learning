@@ -13,6 +13,6 @@ public class ListenGuidelineTest {
         ListenGuidelineDao listenGuidelineDao = new ListenGuidelineDaoImpl();
         Integer offset = 2;
         Integer limit = 2;
-        List<ListenGuidelineEntity> list = listenGuidelineDao.findByProperty(null, null, null, null, offset, limit);
+        Object[] list = listenGuidelineDao.findByProperty(null, null, null, null, offset, limit);
     }
 }

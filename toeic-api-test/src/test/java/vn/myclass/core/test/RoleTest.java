@@ -53,7 +53,7 @@ public class RoleTest {
         String sortDirection = null;
         Integer offset = null;
         Integer limit = null;
-        List<RoleEntity> list = roleDao.findByProperty(property, value, sortExpression, sortDirection, offset, limit);
+        Object[] list = roleDao.findByProperty(property, value, sortExpression, sortDirection, offset, limit);
     }
 
 //    @Test

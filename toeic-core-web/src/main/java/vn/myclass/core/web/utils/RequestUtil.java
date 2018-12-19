@@ -21,9 +21,6 @@ public class RequestUtil {
             }catch (Exception ignore){
 
             }
-//            if (StringUtils.isNotBlank(pageStr)){
-//                page = Integer.parseInt(pageStr);
-//            }
 
             Integer firstItem = (page - 1) * bean.getMaxPageItems();
 

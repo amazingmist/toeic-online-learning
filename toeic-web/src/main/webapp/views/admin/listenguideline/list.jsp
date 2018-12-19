@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/tablib.jsp" %>
+<c:url var="requestURI" value="/admin-guideline-listen-list.html"></c:url>
 <!doctype html>
 <html lang="en">
 <head>
@@ -65,9 +66,10 @@
                                            size="${items.totalItems}" pagesize="${items.maxPageItems}"
                                            class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
                                            style="margin: 3em 0 1.5em;"
-                                           sort="external">
-                                <display:column property="title" titleKey="label.guideline.title" sortable="true"/>
-                                <display:column property="content" titleKey="label.guideline.content" sortable="true"/>
+                                           sort="external"
+                                           requestURI="${requestURI}">
+                                <display:column property="title" titleKey="label.guideline.title" sortable="true" sortName="title"/>
+                                <display:column property="content" titleKey="label.guideline.content" sortable="true" sortName="content"/>
                             </display:table>
                         </fmt:bundle>
                     </div>

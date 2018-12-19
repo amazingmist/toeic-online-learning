@@ -2,6 +2,7 @@ package vn.myclass.core.data.daoimpl;
 
 import org.hibernate.*;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import vn.myclass.core.common.constant.CoreConstant;
 import vn.myclass.core.common.utils.HibernateUtil;
@@ -88,8 +89,9 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         return result;
     }
 
-    public List<T> findByProperty(String property, Object value, String sortExpression, String sortDirection, Integer offset, Integer limit) {
+    public Object[] findByProperty(String property, Object value, String sortExpression, String sortDirection, Integer offset, Integer limit) {
         List<T> list;
+        Long count;
         Session session = this.getSession();
         try {
             Criteria cr = session.createCriteria(this.getPersistenceClass());
@@ -117,10 +119,15 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             }
 
             list = cr.list();
+
+//          count total of items
+            Criteria cr2 = session.createCriteria(this.getPersistenceClass());
+            cr2.setProjection(Projections.rowCount());
+            count = (Long) cr2.uniqueResult();
         }catch (HibernateException ex){
             throw ex;
         }
-        return list;
+        return new Object[]{count, list};
     }
 
     public Integer delete(List<ID> ids) {
