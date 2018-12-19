@@ -93,9 +93,13 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         Session session = this.getSession();
         try {
             Criteria cr = session.createCriteria(this.getPersistenceClass());
+
+//            set condition for query
             if (property != null && value != null) {
                 cr.add(Restrictions.eq(property, value));
             }
+
+//            set sort direction
             if (sortExpression != null && sortDirection != null){
                 Order order = sortDirection.equals(CoreConstant.SORT_ASC) ?
                         Order.asc(sortExpression) : Order.desc(sortExpression);
@@ -106,6 +110,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             if (offset != null && offset >= 0){
                 cr.setFirstResult(offset);
             }
+
 //            set limit row
             if (limit != null && limit > 0){
                 cr.setMaxResults(limit);
