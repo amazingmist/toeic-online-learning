@@ -38,8 +38,8 @@ public class LoginController extends HttpServlet {
             } else if (roleDTO.getName().equals(WebConstant.ROLE_USER)) {
                 resp.sendRedirect("/home.html");
             }
-        } catch (NullPointerException e) {
-            logger.error(e.getMessage(), e);
+        } catch (NullPointerException ex) {
+            logger.error(ex.getMessage(), ex);
             req.setAttribute(WebConstant.ALERT, WebConstant.TYPE_ERROR);
             req.setAttribute(WebConstant.MESSAGE_RESPONSE, "Username or password is invalid");
             req.getRequestDispatcher("/views/web/login.jsp").forward(req, resp);

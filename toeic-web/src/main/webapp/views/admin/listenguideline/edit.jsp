@@ -61,10 +61,21 @@
                     <!-- PAGE CONTENT BEGINS -->
                     <form action="${formUrl}" enctype="multipart/form-data" method="post">
                         <div class="form-group">
-                            <label for="exampleInputFile"><fmt:message key="label.guideline.upload.image" bundle="${lang}"/> </label>
-                            <input type="file" id="exampleInputFile" name="file">
+                            <label for="title"><fmt:message key="label.guideline.title" bundle="${lang}"/></label>
+                            <input type="text" class="form-control" id="title" name="pojo.title">
                         </div>
-                        <button type="submit" class="btn btn-default btn-sm"><fmt:message key="lable.done" bundle="${lang}" /></button>
+                        <div class="form-group">
+                            <label for="inputFile"><fmt:message key="label.guideline.upload.image"
+                                                                bundle="${lang}"/> </label>
+                            <input type="file" id="inputFile" name="file">
+                        </div>
+                        <div class="form-group">
+                            <label for="content"><fmt:message key="label.guideline.content"
+                                                              bundle="${lang}"/></label>
+                            <textarea class="form-control" rows="5" id="content" name="pojo.content"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-default btn-sm"><fmt:message key="label.done"
+                                                                                          bundle="${lang}"/></button>
                     </form>
                     <!-- PAGE CONTENT ENDS -->
                 </div>
