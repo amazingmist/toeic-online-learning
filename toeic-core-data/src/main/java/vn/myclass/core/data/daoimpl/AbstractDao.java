@@ -75,7 +75,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         }
     }
 
-    public T findById(ID id) {
+    public T findById(ID id){
         T result;
         Session session = this.getSession();
         try {

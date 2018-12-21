@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/tablib.jsp" %>
 <c:url var="requestURI" value="/admin-guideline-listen-list.html"></c:url>
-<c:url value='/admin-guideline-listen-edit.html' var="listenGuidelineEditUrl">
+<c:url value='/admin-guideline-listen-edit.html' var="userEditUrl">
     <c:param name="urlType" value="url_edit"></c:param>
 </c:url>
 
@@ -51,20 +51,10 @@
             <!-- /.nav-search -->
         </div>
         <div class="page-content">
-            <div class="page-header">
-                <h1>
-                    <fmt:message key="label.guideline.listen" bundle="${lang}"/>
-                    <small>
-                        <i class="ace-icon fa fa-angle-double-right"></i>
-                        <fmt:message key="label.guideline.listen.list" bundle="${lang}"/>
-                    </small>
-                </h1>
-            </div>
-            <!-- /.page-header -->
             <div class="row">
                 <div class="col-xs-12">
-                    <a href="${listenGuidelineEditUrl}" type="button"><fmt:message key="label.guideline.listen.add"
-                                                                                   bundle="${lang}"/> </a>
+                    <a href="${userEditUrl}" type="button"><fmt:message key="label.guideline.listen.add"
+                                                                        bundle="${lang}"/> </a>
                 </div>
                 <div class="col-xs-12">
                     <!-- PAGE CONTENT BEGINS -->
