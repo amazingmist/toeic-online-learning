@@ -89,6 +89,8 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             }
         }catch (HibernateException ex){
             throw ex;
+        }finally {
+            session.close();
         }
         return result;
     }
@@ -141,6 +143,8 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             count = (Long) cr2.uniqueResult();
         }catch (HibernateException ex){
             throw ex;
+        }finally {
+            session.close();
         }
         return new Object[]{count, list};
     }
