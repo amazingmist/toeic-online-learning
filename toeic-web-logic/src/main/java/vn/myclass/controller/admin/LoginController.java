@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 @WebServlet(urlPatterns = "/login.html")
 public class LoginController extends HttpServlet {
@@ -31,16 +32,17 @@ public class LoginController extends HttpServlet {
         UserCommand command = FormUtil.populate(UserCommand.class, req);
         UserDTO pojo = command.getPojo();
         try {
-            RoleDTO roleDTO = SingletonServiceUtil.getUserServiceInstance().findRoleByUser(pojo).getRoleDTO();
-            if (roleDTO.getName().equals(WebConstant.ROLE_ADMIN)) {
+            UserDTO userDTO = SingletonServiceUtil.getUserServiceInstance().findRoleByUser(pojo);
+            if (userDTO.getRoleDTO().getName().equals(WebConstant.ROLE_ADMIN)) {
                 resp.sendRedirect("/admin-home.html");
-            } else if (roleDTO.getName().equals(WebConstant.ROLE_USER)) {
+            } else if (userDTO.getRoleDTO().getName().equals(WebConstant.ROLE_USER)) {
                 resp.sendRedirect("/home.html");
             }
         } catch (NullPointerException ex) {
+            ResourceBundle resourceBundle = ResourceBundle.getBundle("ApplicationRescources");
             logger.error(ex.getMessage(), ex);
             req.setAttribute(WebConstant.ALERT, WebConstant.TYPE_ERROR);
-            req.setAttribute(WebConstant.MESSAGE_RESPONSE, "Username or password is invalid");
+            req.setAttribute(WebConstant.MESSAGE_RESPONSE, resourceBundle.getString("label.login.wrong"));
             req.getRequestDispatcher("/views/web/login.jsp").forward(req, resp);
         }
     }

@@ -13,12 +13,6 @@ import java.util.Map;
 
 public class UserServiceImpl implements UserService {
     @Override
-    public UserDTO isUserExist(UserDTO userDTO) {
-        UserEntity entity = SingletonDaoUtil.getUserDaoInstance().findUserByNameAndPassword(userDTO.getName(), userDTO.getPassword());
-        return UserBeanUtil.entity2Dto(entity);
-    }
-
-    @Override
     public UserDTO findRoleByUser(UserDTO userDTO) {
         UserEntity entity = SingletonDaoUtil.getUserDaoInstance().findUserByNameAndPassword(userDTO.getName(), userDTO.getPassword());
         return UserBeanUtil.entity2Dto(entity);
