@@ -13,6 +13,7 @@ import java.util.List;
 public class RoleServiceImpl implements RoleService {
     RoleDao roleDao = new RoleDaoImpl();
 
+    @Override
     public List<RoleDTO> findAll() {
         List<RoleEntity> entities = roleDao.findAll();
         List<RoleDTO> dtos = new ArrayList<RoleDTO>();

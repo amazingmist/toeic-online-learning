@@ -10,9 +10,18 @@ import java.util.List;
 public class UserCommand extends AbstractCommand<UserDTO> {
     private String confirmPassword;
     private List<RoleDTO> roles;
+    private Integer roleId;
 
     public UserCommand() {
         this.pojo = new UserDTO();
+    }
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
     public String getConfirmPassword() {

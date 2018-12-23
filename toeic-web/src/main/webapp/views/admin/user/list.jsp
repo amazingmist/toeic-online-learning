@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/tablib.jsp" %>
-<c:url var="requestURI" value="/admin-user-list.html"></c:url>
+<c:url var="requestURI" value="/admin-user-list.html">
+    <c:param name="urlType" value="url_list"></c:param>
+</c:url>
 <c:url var="userAddNewUrl" value='/ajax-admin-user-edit.html'>
     <c:param name="urlType" value="url_edit"></c:param>
 </c:url>
@@ -71,7 +73,8 @@
                             <div class="pull-right">
                                 <div class="btn-group btn-overlap">
                                     <div class="ColVis btn-group" title="" data-original-title="Show/hide columns">
-                                        <button onclick="addNewOrUpdateUser(this)" class="ColVis_Button ColVis_MasterButton btn btn-primary btn-sm btn-bold"
+                                        <button onclick="showAddOrUpdateModal(this)"
+                                                class="ColVis_Button ColVis_MasterButton btn btn-primary btn-sm btn-bold"
                                                 id="btn-add-new" style="display: flex; align-items: center">
                                             <span><i class="icon-only  ace-icon ace-icon fa fa-plus bigger-140"
                                                      style="padding-right: 5px"></i></span><fmt:message key="label.add"
@@ -109,10 +112,13 @@
                                 <display:column titleKey="label.action">
 
                                     <div class="hidden-sm hidden-xs btn-group">
-                                        <button onclick="addNewOrUpdateUser(this)" data-id="${tableList.userId}" class="btn btn-xs btn-info" data-toggle="tooltip" title="<fmt:message key="label.edit" bundle="${lang}"/>">
+                                        <button onclick="showAddOrUpdateModal(this)" data-id="${tableList.userId}"
+                                                class="btn btn-xs btn-info" data-toggle="tooltip"
+                                                title="<fmt:message key="label.edit" bundle="${lang}"/>">
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                         </button>
-                                        <button class="btn btn-xs btn-danger" data-toggle="tooltip" title="<fmt:message key="label.delete" bundle="${lang}"/>">
+                                        <button class="btn btn-xs btn-danger" data-toggle="tooltip"
+                                                title="<fmt:message key="label.delete" bundle="${lang}"/>">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
                                     </div>
@@ -120,6 +126,10 @@
                             </display:table>
                         </fmt:bundle>
                     </div>
+                    <form action="${requestURI}" method="get" id="reload-after-action">
+                        <input type="hidden" name="urlType" id="urlTypeReload">
+                        <input type="hidden" name="crudAction" id="crudactionReload">
+                    </form>
                     <!-- PAGE CONTENT ENDS -->
                 </div>
                 <!-- /.col -->
@@ -135,18 +145,44 @@
     $(document).ready(function () {
 
     });
-    
-    function addNewOrUpdateUser(btn) {
+
+    function showAddOrUpdateModal(btn) {
         var id = $(btn).data('id');
         var submitUrl = '${userAddNewUrl}';
 
-        if (id != undefined){
-            submitUrl = '${userEditUrl}'+id;
+        if (id != undefined) {
+            submitUrl = '${userEditUrl}' + id;
         }
         console.log(submitUrl);
 
         $('#add-new-modal').load(submitUrl, function () {
             $('#add-new-modal').modal('toggle');
+            addOrUpdateUser();
+        });
+    }
+
+    function addOrUpdateUser() {
+        $('#btn-save').click(function () {
+            $('#edit-user-form').submit();
+        });
+
+        $('#edit-user-form').submit(function (evt) {
+            evt.preventDefault();
+            $('#crudactionEdit').val('insert_update');
+            $.ajax({
+                type: $(this).attr("method"),
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                dataType: 'html',
+                success: function (resp) {
+                    $('#urlTypeReload').val('url_list');
+                    $('#crudactionReload').val(resp.trim());
+                    $('#reload-after-action').submit();
+                },
+                error: function (resp) {
+                    console.log(resp);
+                }
+            });
         });
     }
 </script>
