@@ -4,13 +4,10 @@ import org.apache.log4j.Logger;
 import vn.myclass.command.UserCommand;
 import vn.myclass.core.dto.RoleDTO;
 import vn.myclass.core.dto.UserDTO;
-import vn.myclass.core.service.RoleService;
-import vn.myclass.core.service.UserService;
-import vn.myclass.core.service.impl.RoleServiceImpl;
-import vn.myclass.core.service.impl.UserServiceImpl;
 import vn.myclass.core.web.common.WebConstant;
 import vn.myclass.core.web.utils.FormUtil;
 import vn.myclass.core.web.utils.RequestUtil;
+import vn.myclass.core.web.utils.SingletonServiceUtil;
 import vn.myclass.core.web.utils.WebCommonUtil;
 
 import javax.servlet.ServletException;
@@ -27,8 +24,6 @@ import java.util.ResourceBundle;
 @WebServlet(urlPatterns = {"/admin-user-list.html", "/ajax-admin-user-edit.html"})
 public class UserController extends HttpServlet {
     private final Logger logger = Logger.getLogger(this.getClass());
-    UserService userService = new UserServiceImpl();
-    RoleService roleService = new RoleServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -40,7 +35,7 @@ public class UserController extends HttpServlet {
 
         if (command.getUrlType() != null && command.getUrlType().equals(WebConstant.URL_LIST)) {
             Map<String, Object> properties = new HashMap<String, Object>();
-            Object[] finded = userService.findByProperties(properties, command.getSortExpression(), command.getSortDirection(), command.getFirstItem(), command.getMaxPageItems());
+            Object[] finded = SingletonServiceUtil.getUserServiceInstance().findByProperties(properties, command.getSortExpression(), command.getSortDirection(), command.getFirstItem(), command.getMaxPageItems());
             command.setListResult((List<UserDTO>) finded[1]);
             command.setTotalItems(Integer.parseInt(finded[0].toString()));
 
@@ -56,12 +51,12 @@ public class UserController extends HttpServlet {
         } else if (command.getUrlType() != null && command.getUrlType().equals(WebConstant.URL_EDIT)) {
             if (command.getPojo() != null && command.getPojo().getUserId() != null) {
 //            check if is existed user id and then we get this pojo from db
-                dto = userService.findById(dto.getUserId());
+                dto = SingletonServiceUtil.getUserServiceInstance().findById(dto.getUserId());
                 command.setPojo(dto);
             }
 
 //            set all role to user command
-            command.setRoles(roleService.findAll());
+            command.setRoles(SingletonServiceUtil.getRoleServiceInstance().findAll());
             req.setAttribute(WebConstant.FORM_ITEM, command);
             req.getRequestDispatcher("/views/admin/user/edit.jsp").forward(req, resp);
         }
@@ -80,11 +75,11 @@ public class UserController extends HttpServlet {
 
                     if (pojo.getUserId() != null) {
 //                    update user
-                        pojo = userService.updateUser(pojo);
+                        pojo = SingletonServiceUtil.getUserServiceInstance().updateUser(pojo);
                         req.setAttribute(WebConstant.MESSAGE_RESPONSE, WebConstant.REDIRECT_UPDATE);
                     } else {
 //                    insert user
-                        userService.saveUser(pojo);
+                        SingletonServiceUtil.getUserServiceInstance().saveUser(pojo);
                         req.setAttribute(WebConstant.MESSAGE_RESPONSE, WebConstant.REDIRECT_INSERT);
                     }
                 }
@@ -102,6 +97,6 @@ public class UserController extends HttpServlet {
         messageMap.put(WebConstant.REDIRECT_UPDATE, resourceBundle.getString("label.user.update.success"));
         messageMap.put(WebConstant.REDIRECT_DELETE, resourceBundle.getString("label.user.delete.success"));
         messageMap.put(WebConstant.REDIRECT_ERROR, resourceBundle.getString("label.message.error"));
-        return  messageMap;
+        return messageMap;
     }
 }

@@ -8,6 +8,7 @@ import vn.myclass.core.service.UserService;
 import vn.myclass.core.service.impl.UserServiceImpl;
 import vn.myclass.core.web.common.WebConstant;
 import vn.myclass.core.web.utils.FormUtil;
+import vn.myclass.core.web.utils.SingletonServiceUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,10 +30,8 @@ public class LoginController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserCommand command = FormUtil.populate(UserCommand.class, req);
         UserDTO pojo = command.getPojo();
-        UserService userService = new UserServiceImpl();
-
         try {
-            RoleDTO roleDTO = userService.findRoleByUser(pojo).getRoleDTO();
+            RoleDTO roleDTO = SingletonServiceUtil.getUserServiceInstance().findRoleByUser(pojo).getRoleDTO();
             if (roleDTO.getName().equals(WebConstant.ROLE_ADMIN)) {
                 resp.sendRedirect("/admin-home.html");
             } else if (roleDTO.getName().equals(WebConstant.ROLE_USER)) {

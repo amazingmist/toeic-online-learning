@@ -1,7 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/tablib.jsp" %>
-<c:url var="requestURI" value="/admin-user-list.html">
-    <c:param name="urlType" value="url_list"></c:param>
+<c:url var="tableRequestURI" value="/admin-user-list.html">
+    <c:if test="${empty param.urlType}">
+        <c:param name="urlType" value="url_list"></c:param>
+    </c:if>
 </c:url>
 <c:url var="userAddNewUrl" value='/ajax-admin-user-edit.html'>
     <c:param name="urlType" value="url_edit"></c:param>
@@ -97,7 +99,7 @@
                                            class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
                                            style="margin: 3em 0 1.5em;"
                                            sort="external"
-                                           requestURI="${requestURI}">
+                                           requestURI="${tableRequestURI}">
                                 <display:column
                                         title="<input type='checkbox' class='ace check-box-element' id='chk-check-all'><span class='lbl'></span>"
                                         class="center select-cell" headerClass="center select-cell">
@@ -126,7 +128,7 @@
                             </display:table>
                         </fmt:bundle>
                     </div>
-                    <form action="${requestURI}" method="get" id="reload-after-action">
+                    <form action="${tableRequestURI}" method="get" id="reload-after-action">
                         <input type="hidden" name="urlType" id="urlTypeReload">
                         <input type="hidden" name="crudAction" id="crudactionReload">
                     </form>

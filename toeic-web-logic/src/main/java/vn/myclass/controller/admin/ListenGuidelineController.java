@@ -3,8 +3,6 @@ package vn.myclass.controller.admin;
 import org.apache.log4j.Logger;
 import vn.myclass.command.ListenGuidelineCommand;
 import vn.myclass.core.common.utils.UploadUtil;
-import vn.myclass.core.service.ListenGuidelineService;
-import vn.myclass.core.service.impl.ListenGuidelineServiceImpl;
 import vn.myclass.core.web.common.WebConstant;
 import vn.myclass.core.web.utils.FormUtil;
 
@@ -15,12 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.Set;
 
 //@WebServlet("/admin-guideline-listen-list.html")
 @WebServlet(urlPatterns = {"/admin-guideline-listen-list.html", "/admin-guideline-listen-edit.html"})
 public class ListenGuidelineController extends HttpServlet {
-    ListenGuidelineService listenGuidelineService = new ListenGuidelineServiceImpl();
     private final Logger logger = Logger.getLogger(this.getClass());
 
     @Override
