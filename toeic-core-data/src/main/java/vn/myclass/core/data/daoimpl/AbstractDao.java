@@ -47,11 +47,12 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         return list;
     }
 
-    public void update(T entity) {
+    public T update(T entity) {
+        T result = null;
         Session session = this.getSession();
         Transaction transaction = session.beginTransaction();
         try {
-            session.update(entity);
+            result = (T) session.merge(entity);
             transaction.commit();
         }catch (HibernateException ex){
             transaction.rollback();
@@ -59,9 +60,10 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         }finally {
             session.close();
         }
+        return result;
     }
 
-    public void save(T entity) {
+    public T save(T entity) {
         Session session = this.getSession();
         Transaction transaction = session.beginTransaction();
         try {
@@ -73,6 +75,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         }finally {
             session.close();
         }
+        return entity;
     }
 
     public T findById(ID id){
