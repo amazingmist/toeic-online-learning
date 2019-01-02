@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="/common/tablib.jsp" %>
+<%@include file="/common/taglib.jsp" %>
 <c:url var="requestURI" value="/admin-guideline-listen-list.html"></c:url>
 <c:url value='/admin-guideline-listen-edit.html' var="userEditUrl">
     <c:param name="urlType" value="url_edit"></c:param>

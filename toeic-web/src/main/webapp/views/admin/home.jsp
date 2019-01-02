@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="/common/tablib.jsp"%>
+<%@include file="/common/taglib.jsp"%>
 <html>
 <head>
     <title><fmt:message key="label.admin.title" bundle="${lang}"/></title>

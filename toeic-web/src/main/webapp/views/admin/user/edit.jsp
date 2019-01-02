@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="/common/tablib.jsp" %>
+<%@include file="/common/taglib.jsp" %>
 <c:url var="submitUrl" value="/ajax-admin-user-edit.html">
-    <c:param name="urlType" value="url_edit"></c:param>
+    <c:param name="urlType" value="url_edit" />
 </c:url>
 <c:choose>
     <c:when test="${not empty messageResponse}">
@@ -22,7 +22,7 @@
                         </c:otherwise>
                     </c:choose>
                 </div>
-                <form action="${submitUrl}" method="post" id="edit-user-form">
+                <form action="${submitUrl}" method="post" id="editUserForm">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="name"><fmt:message key="label.user.name" bundle="${lang}"/>:</label>
@@ -53,13 +53,12 @@
                         <c:if test="${not empty item.pojo.userId}">
                             <input type="hidden" name="pojo.userId" value="${item.pojo.userId}">
                         </c:if>
-                        <input type="hidden" name="crudAction" id="crudactionEdit">
-
+                        <input type="hidden" name="crudAction" id="crudActionEdit">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal" id="btn-close">
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal" id="btnClose">
                             <fmt:message key="label.close" bundle="${lang}"/></button>
-                        <button type="submit" class="btn btn-primary btn-sm" id="btn-save">
+                        <button type="submit" class="btn btn-primary btn-sm" id="btnSave">
                             <fmt:message key="label.save" bundle="${lang}"/></button>
                     </div>
                 </form>
