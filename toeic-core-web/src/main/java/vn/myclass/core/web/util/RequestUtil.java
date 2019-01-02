@@ -1,4 +1,4 @@
-package vn.myclass.core.web.utils;
+package vn.myclass.core.web.util;
 
 import org.displaytag.tags.TableTagParameters;
 import org.displaytag.util.ParamEncoder;
@@ -15,14 +15,14 @@ public class RequestUtil {
             String pageStr = req.getParameter(new ParamEncoder(bean.getTableId()).encodeParameterName(TableTagParameters.PARAMETER_PAGE));
 
 //            parse page if it existed
-            Integer page = 1;
+            int page = 1;
             try {
                 page = Integer.parseInt(pageStr);
             }catch (Exception ignore){
 
             }
 
-            Integer firstItem = (page - 1) * bean.getMaxPageItems();
+            int firstItem = (page - 1) * bean.getMaxPageItems();
 
 //            set properties for bean
             bean.setPage(page);

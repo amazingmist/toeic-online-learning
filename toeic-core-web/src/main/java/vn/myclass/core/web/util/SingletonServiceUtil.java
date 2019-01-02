@@ -1,4 +1,4 @@
-package vn.myclass.core.web.utils;
+package vn.myclass.core.web.util;
 
 import vn.myclass.core.service.impl.ListenGuidelineServiceImpl;
 import vn.myclass.core.service.impl.RoleServiceImpl;

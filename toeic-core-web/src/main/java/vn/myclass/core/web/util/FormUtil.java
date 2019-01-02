@@ -1,4 +1,4 @@
-package vn.myclass.core.web.utils;
+package vn.myclass.core.web.util;
 
 import org.apache.commons.beanutils.BeanUtils;
 
@@ -9,13 +9,9 @@ public class FormUtil {
     public static <T> T populate(Class<T> clazz, HttpServletRequest request)  {
         T object = null;
         try {
-            object = (T) clazz.newInstance();
+            object = clazz.newInstance();
             BeanUtils.populate(object, request.getParameterMap());
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
         return object;

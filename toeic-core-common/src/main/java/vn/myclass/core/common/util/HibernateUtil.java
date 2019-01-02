@@ -1,4 +1,4 @@
-package vn.myclass.core.common.utils;
+package vn.myclass.core.common.util;
 
 
 import org.hibernate.SessionFactory;

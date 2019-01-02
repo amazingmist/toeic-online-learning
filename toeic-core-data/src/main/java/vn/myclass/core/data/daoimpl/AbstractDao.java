@@ -5,7 +5,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import vn.myclass.core.common.constant.CoreConstant;
-import vn.myclass.core.common.utils.HibernateUtil;
+import vn.myclass.core.common.util.HibernateUtil;
 import vn.myclass.core.data.dao.GenericDao;
 
 import java.io.Serializable;
@@ -22,10 +22,10 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         this.persistenceClass = (Class<T>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
     }
 
-    public String getPersistenceClassName(){
+    private String getPersistenceClassName(){
         return this.persistenceClass.getSimpleName();
     }
-    public Class getPersistenceClass(){
+    protected Class<T> getPersistenceClass(){
         return this.persistenceClass;
     }
 
@@ -34,13 +34,11 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
     }
 
     public List<T> findAll() {
-        List<T> list;
+        List list;
         Session session = this.getSession();
         try {
             list = session.createCriteria(this.getPersistenceClass()).list();
-        }catch (HibernateException ex){
-            throw ex;
-        }finally {
+        } finally {
             session.close();
         }
 
@@ -48,7 +46,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
     }
 
     public T update(T entity) {
-        T result = null;
+        T result;
         Session session = this.getSession();
         Transaction transaction = session.beginTransaction();
         try {
@@ -87,16 +85,14 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             if (result == null){
                 throw new ObjectNotFoundException("NOT FOUND " + id, this.getPersistenceClassName());
             }
-        }catch (HibernateException ex){
-            throw ex;
-        }finally {
+        } finally {
             session.close();
         }
         return result;
     }
 
     public Object[] findByProperties(Map<String, Object> properties, String sortExpression, String sortDirection, Integer offset, Integer limit) {
-        List<T> list;
+        List list;
         Long count;
         Session session = this.getSession();
         try {
@@ -141,9 +137,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
 //            set result is a num row of list
             cr2.setProjection(Projections.rowCount());
             count = (Long) cr2.uniqueResult();
-        }catch (HibernateException ex){
-            throw ex;
-        }finally {
+        } finally {
             session.close();
         }
         return new Object[]{count, list};

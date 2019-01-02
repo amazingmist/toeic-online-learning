@@ -3,7 +3,7 @@ package vn.myclass.core.service.impl;
 import vn.myclass.core.dto.UserDTO;
 import vn.myclass.core.persistence.entity.UserEntity;
 import vn.myclass.core.service.UserService;
-import vn.myclass.core.service.utils.SingletonDaoUtil;
+import vn.myclass.core.service.util.SingletonDaoUtil;
 import vn.myclass.core.utils.UserBeanUtil;
 
 import java.sql.Timestamp;
@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Object[] findByProperties(Map<String, Object> properties, String sortExpression, String sortDirection, Integer offset, Integer limit) {
         Object[] finded = SingletonDaoUtil.getUserDaoInstance().findByProperties(properties, sortExpression, sortDirection, offset, limit);
-        List<UserDTO> dtoList = new ArrayList<UserDTO>();
+        List<UserDTO> dtoList = new ArrayList<>();
 
 //        convert entity list to dto
         for (UserEntity entity : (List<UserEntity>) finded[1]) {

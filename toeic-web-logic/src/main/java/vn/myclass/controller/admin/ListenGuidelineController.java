@@ -2,9 +2,9 @@ package vn.myclass.controller.admin;
 
 import org.apache.log4j.Logger;
 import vn.myclass.command.ListenGuidelineCommand;
-import vn.myclass.core.common.utils.UploadUtil;
+import vn.myclass.core.common.util.UploadUtil;
 import vn.myclass.core.web.common.WebConstant;
-import vn.myclass.core.web.utils.FormUtil;
+import vn.myclass.core.web.util.FormUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -55,7 +55,7 @@ public class ListenGuidelineController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         ListenGuidelineCommand command = new ListenGuidelineCommand();
         HttpSession session = req.getSession();
         ResourceBundle resourceBundle = ResourceBundle.getBundle("ApplicationRescources");
@@ -65,7 +65,7 @@ public class ListenGuidelineController extends HttpServlet {
         try {
             Object[] returnedObjects = uploadUtil.writeOrUpdateFile(req, titleValueSet, WebConstant.LISTEN_GUIDELINE_IMAGE_URL);
             Map<String, String> returnValueMap = (Map<String, String>) returnedObjects[3];
-            command = mappingReturnValueMapToCommand(returnValueMap, command);
+            mappingReturnValueMapToCommand(returnValueMap, command);
 
             session.setAttribute(WebConstant.ALERT, WebConstant.TYPE_SUCCESS);
             session.setAttribute(WebConstant.MESSAGE_RESPONSE, resourceBundle.getString("label.guideline.listen.add.success"));
@@ -91,7 +91,7 @@ public class ListenGuidelineController extends HttpServlet {
     }
 
     private Set<String> buildTitleValueSet() {
-        Set<String> titleValueSet = new HashSet<String>();
+        Set<String> titleValueSet = new HashSet<>();
         titleValueSet.add("pojo.title");
         titleValueSet.add("pojo.content");
         return titleValueSet;

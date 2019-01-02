@@ -2,13 +2,10 @@ package vn.myclass.controller.admin;
 
 import org.apache.log4j.Logger;
 import vn.myclass.command.UserCommand;
-import vn.myclass.core.dto.RoleDTO;
 import vn.myclass.core.dto.UserDTO;
-import vn.myclass.core.service.UserService;
-import vn.myclass.core.service.impl.UserServiceImpl;
 import vn.myclass.core.web.common.WebConstant;
-import vn.myclass.core.web.utils.FormUtil;
-import vn.myclass.core.web.utils.SingletonServiceUtil;
+import vn.myclass.core.web.util.FormUtil;
+import vn.myclass.core.web.util.SingletonServiceUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

@@ -1,4 +1,4 @@
-package vn.myclass.core.service.utils;
+package vn.myclass.core.service.util;
 
 import vn.myclass.core.daoimpl.ListenGuidelineDaoImpl;
 import vn.myclass.core.daoimpl.RoleDaoImpl;

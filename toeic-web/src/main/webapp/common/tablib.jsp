@@ -2,7 +2,7 @@
 
 <%-- Using resource bundle to management text in .jsp file--%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setBundle basename="ApplicationRescources" var="lang"/>
+<fmt:setBundle basename="ApplicationResources" var="lang"/>
 <%-- End resource bundle --%>
 
 <%@taglib prefix="dec" uri="http://www.opensymphony.com/sitemesh/decorator" %>

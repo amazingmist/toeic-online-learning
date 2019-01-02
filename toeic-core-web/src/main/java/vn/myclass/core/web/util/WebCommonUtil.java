@@ -1,4 +1,4 @@
-package vn.myclass.core.web.utils;
+package vn.myclass.core.web.util;
 
 import org.apache.commons.lang.StringUtils;
 import vn.myclass.core.web.common.WebConstant;

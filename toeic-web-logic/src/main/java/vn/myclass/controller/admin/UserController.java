@@ -5,10 +5,10 @@ import vn.myclass.command.UserCommand;
 import vn.myclass.core.dto.RoleDTO;
 import vn.myclass.core.dto.UserDTO;
 import vn.myclass.core.web.common.WebConstant;
-import vn.myclass.core.web.utils.FormUtil;
-import vn.myclass.core.web.utils.RequestUtil;
-import vn.myclass.core.web.utils.SingletonServiceUtil;
-import vn.myclass.core.web.utils.WebCommonUtil;
+import vn.myclass.core.web.util.FormUtil;
+import vn.myclass.core.web.util.RequestUtil;
+import vn.myclass.core.web.util.SingletonServiceUtil;
+import vn.myclass.core.web.util.WebCommonUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,10 +31,10 @@ public class UserController extends HttpServlet {
         RequestUtil.initSearchBean(req, command);
 
         UserDTO dto = command.getPojo();
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("ApplicationRescources");
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("ApplicationResources");
 
         if (command.getUrlType() != null && command.getUrlType().equals(WebConstant.URL_LIST)) {
-            Map<String, Object> properties = new HashMap<String, Object>();
+            Map<String, Object> properties = new HashMap<>();
             Object[] finded = SingletonServiceUtil.getUserServiceInstance().findByProperties(properties, command.getSortExpression(), command.getSortDirection(), command.getFirstItem(), command.getMaxPageItems());
             command.setListResult((List<UserDTO>) finded[1]);
             command.setTotalItems(Integer.parseInt(finded[0].toString()));
@@ -71,6 +71,7 @@ public class UserController extends HttpServlet {
                 if (command.getCrudAction() != null && command.getCrudAction().equals(WebConstant.INSERT_UPDATE_ACTION)) {
                     RoleDTO roleDTO = new RoleDTO();
                     roleDTO.setRoleId(command.getRoleId());
+
                     pojo.setRoleDTO(roleDTO);
 
                     if (pojo.getUserId() != null) {
@@ -92,7 +93,7 @@ public class UserController extends HttpServlet {
     }
 
     private Map<String, String> buildMessageMap(ResourceBundle resourceBundle) {
-        Map<String, String> messageMap = new HashMap<String, String>();
+        Map<String, String> messageMap = new HashMap<>();
         messageMap.put(WebConstant.REDIRECT_INSERT, resourceBundle.getString("label.user.add.success"));
         messageMap.put(WebConstant.REDIRECT_UPDATE, resourceBundle.getString("label.user.update.success"));
         messageMap.put(WebConstant.REDIRECT_DELETE, resourceBundle.getString("label.user.delete.success"));

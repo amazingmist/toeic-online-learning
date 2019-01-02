@@ -1,4 +1,4 @@
-package vn.myclass.core.common.utils;
+package vn.myclass.core.common.util;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -22,10 +22,10 @@ public class UploadUtil {
         String address = servletContext.getRealPath("image");
 
 //        those are all return value in this method
-        boolean isSuccess = true;
+        boolean isSuccess;
         String fileLocation = null;
         String fileName = null;
-        Map<String, String> returnValueMap = new HashMap<String, String>();
+        Map<String, String> returnValueMap = new HashMap<>();
 
         // Check that we have a file upload request
         isSuccess = ServletFileUpload.isMultipartContent(request);
