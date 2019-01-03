@@ -36,7 +36,7 @@ public class LoginController extends HttpServlet {
                 resp.sendRedirect("/home.html");
             }
         } catch (NullPointerException ex) {
-            ResourceBundle resourceBundle = ResourceBundle.getBundle("ApplicationRescources");
+            ResourceBundle resourceBundle = ResourceBundle.getBundle("ApplicationResources");
             logger.error(ex.getMessage(), ex);
             req.setAttribute(WebConstant.ALERT, WebConstant.TYPE_ERROR);
             req.setAttribute(WebConstant.MESSAGE_RESPONSE, resourceBundle.getString("label.login.wrong"));

@@ -2,7 +2,7 @@ package vn.myclass.controller.admin;
 
 import org.apache.log4j.Logger;
 import vn.myclass.command.ListenGuidelineCommand;
-import vn.myclass.core.common.util.UploadUtil;
+import vn.myclass.core.common.util.FileUploadUtil;
 import vn.myclass.core.web.common.WebConstant;
 import vn.myclass.core.web.util.FormUtil;
 
@@ -58,12 +58,12 @@ public class ListenGuidelineController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         ListenGuidelineCommand command = new ListenGuidelineCommand();
         HttpSession session = req.getSession();
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("ApplicationRescources");
-        UploadUtil uploadUtil = new UploadUtil();
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("ApplicationResources");
+        FileUploadUtil fileUploadUtil = new FileUploadUtil();
         Set<String> titleValueSet = buildTitleValueSet();
 
         try {
-            Object[] returnedObjects = uploadUtil.writeOrUpdateFile(req, titleValueSet, WebConstant.LISTEN_GUIDELINE_IMAGE_URL);
+            Object[] returnedObjects = fileUploadUtil.writeOrUpdateFile(req, titleValueSet, WebConstant.LISTEN_GUIDELINE_IMAGE_URL);
             Map<String, String> returnValueMap = (Map<String, String>) returnedObjects[3];
             mappingReturnValueMapToCommand(returnValueMap, command);
 

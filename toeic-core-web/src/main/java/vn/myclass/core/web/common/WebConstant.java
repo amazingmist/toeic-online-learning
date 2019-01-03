@@ -11,6 +11,7 @@ public class WebConstant {
     public static final String ROLE_ADMIN = "Admin";
     public static final String URL_LIST = "url_list";
     public static final String URL_EDIT = "url_edit";
+    public static final String URL_IMPORT = "url_import";
     public static final String LISTEN_GUIDELINE_IMAGE_URL = "listenguideline";
     public static final String INSERT_UPDATE_ACTION = "insert_update";
     public static final String REDIRECT_INSERT = "redirect_insert";

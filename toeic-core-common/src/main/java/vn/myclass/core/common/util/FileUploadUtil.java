@@ -1,9 +1,11 @@
 package vn.myclass.core.common.util;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -13,13 +15,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class UploadUtil {
+public class FileUploadUtil {
+    private final Logger logger = Logger.getLogger(this.getClass());
     private final int MAX_MEMORY_SIZE = 1024 * 1024 * 3; // 3MB
     private final int MAX_REQUEST_SIZE = 1024 * 1024 * 50; // 50MB
 
-    public Object[] writeOrUpdateFile(HttpServletRequest request,  Set<String> titleValueSet, String path) throws Exception {
+    public Object[] writeOrUpdateFile(HttpServletRequest request,  Set<String> titleValueSet, String path) {
         ServletContext servletContext = request.getServletContext();
-        String address = servletContext.getRealPath("image");
+        String address = servletContext.getRealPath("file_upload");
 
 //        those are all return value in this method
         boolean isSuccess;
@@ -44,7 +47,13 @@ public class UploadUtil {
         upload.setSizeMax(MAX_REQUEST_SIZE);
 
         // Parse the request
-        List<FileItem> items = upload.parseRequest(request);
+        List<FileItem> items = null;
+        try {
+            items = upload.parseRequest(request);
+        } catch (FileUploadException e) {
+            logger.error(e.getMessage(), e);
+            isSuccess = false;
+        }
 
         for (FileItem item : items) {
 //            check if this field is a file upload and it have a submitted file
@@ -54,13 +63,14 @@ public class UploadUtil {
                 fileName = uploadedFile.getName();
 
 //                check if this file is already existed
-                if (uploadedFile.exists()) {
-                    isSuccess = uploadedFile.delete();
-                    if (isSuccess){
-                        item.write(uploadedFile);
-                    }
-                }else{
+                try {
+                    uploadedFile.delete();
                     item.write(uploadedFile);
+                } catch (Exception e) {
+                    logger.error(e.getMessage(), e);
+                    isSuccess = false;
+                    fileLocation = null;
+                    fileName = null;
                 }
             }else if (item.isFormField()){
 //                this file is not a file upload

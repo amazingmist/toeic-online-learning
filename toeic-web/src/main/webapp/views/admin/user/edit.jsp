@@ -35,7 +35,7 @@
                                    name="pojo.password" required>
                         </div>
                         <div class="form-group">
-                            <label for="fullName"><fmt:message key="label.user.fullname" bundle="${lang}"/>:</label>
+                            <label for="fullName"><fmt:message key="label.user.fullName" bundle="${lang}"/>:</label>
                             <input type="text" class="form-control" id="fullName" value="${item.pojo.fullName}"
                                    name="pojo.fullName" required>
                         </div>

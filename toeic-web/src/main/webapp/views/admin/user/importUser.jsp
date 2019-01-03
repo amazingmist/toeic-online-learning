@@ -1,9 +1,15 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: vothanhtai
+  Date: 1/3/19
+  Time: 15:26
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp" %>
-<c:url var="formUrl" value="/admin-guideline-listen-edit.html"></c:url>
+<c:url var="formUrl" value="/admin-user-import.html"></c:url>
 <html>
 <head>
-    <title><fmt:message key="label.guideline.listen.edit" bundle="${lang}"/></title>
+    <title><fmt:message key="label.user.import" bundle="${lang}"/></title>
 </head>
 <body>
 <div class="main-content">
@@ -22,11 +28,11 @@
                 </li>
                 <li>
                     <a href="#">
-                        <fmt:message key="label.guideline.listen" bundle="${lang}"/>
+                        <fmt:message key="label.user.management" bundle="${lang}"/>
                     </a>
                 </li>
                 <li class="active">
-                    <fmt:message key="label.guideline.listen.edit" bundle="${lang}"/>
+                    <fmt:message key="label.user.import" bundle="${lang}"/>
                 </li>
             </ul>
             <!-- /.breadcrumb -->
@@ -47,19 +53,11 @@
                     <!-- PAGE CONTENT BEGINS -->
                     <form action="${formUrl}" enctype="multipart/form-data" method="post">
                         <div class="form-group">
-                            <label for="title"><fmt:message key="label.guideline.title" bundle="${lang}"/></label>
-                            <input type="text" class="form-control" id="title" name="pojo.title">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputFile"><fmt:message key="label.guideline.upload.image"
+                            <label for="inputFile"><fmt:message key="label.import.excel.title"
                                                                 bundle="${lang}"/> </label>
                             <input type="file" id="inputFile" name="file">
                         </div>
-                        <div class="form-group">
-                            <label for="content"><fmt:message key="label.guideline.content"
-                                                              bundle="${lang}"/></label>
-                            <textarea class="form-control" rows="5" id="content" name="pojo.content"></textarea>
-                        </div>
+                        <input type="hidden" name="urlType" value="url_import">
                         <button type="submit" class="btn btn-default btn-sm"><fmt:message key="label.done"
                                                                                           bundle="${lang}"/></button>
                     </form>

@@ -2,24 +2,23 @@
 <%@include file="/common/taglib.jsp" %>
 <c:url var="tableRequestURI" value="/admin-user-list.html">
     <c:if test="${empty param.urlType}">
-        <c:param name="urlType" value="url_list"></c:param>
+        <c:param name="urlType" value="url_list"/>
     </c:if>
 </c:url>
 <c:url var="userAddNewUrl" value='/ajax-admin-user-edit.html'>
-    <c:param name="urlType" value="url_edit"></c:param>
+    <c:param name="urlType" value="url_edit"/>
 </c:url>
 <c:url var="userEditUrl" value="/ajax-admin-user-edit.html">
-    <c:param name="urlType" value="url_edit"></c:param>
+    <c:param name="urlType" value="url_edit"/>
     <c:param name="pojo.userId" value=""/>
+</c:url>
+<c:url var="importUserUrl" value='/admin-user-import.html'>
+    <c:param name="urlType" value="url_import"/>
 </c:url>
 
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><fmt:message key="label.user.management" bundle="${lang}"/></title>
 </head>
 <body>
@@ -75,6 +74,14 @@
                             <div class="pull-right">
                                 <div class="btn-group btn-overlap">
                                     <div class="ColVis btn-group" title="" data-original-title="Show/hide columns">
+                                        <a href="${importUserUrl}"
+                                           class="ColVis_Button ColVis_MasterButton btn btn-success btn-sm btn-bold"
+                                           style="display: flex; align-items: center">
+                                            <span><i class="icon-only  ace-icon ace-icon fa fa-file-excel-o bigger-140"
+                                                     style="padding-right: 5px"></i></span><fmt:message
+                                                key="label.import"
+                                                bundle="${lang}"/>
+                                        </a>
                                         <button onclick="showEditFormModal(this)"
                                                 class="ColVis_Button ColVis_MasterButton btn btn-primary btn-sm btn-bold"
                                                 id="btnAddNew" style="display: flex; align-items: center">
@@ -101,7 +108,7 @@
                                            sort="external"
                                            requestURI="${tableRequestURI}">
                                 <display:column
-                                        title="<input type='checkbox' class='ace check-box-element' id='chk-check-all'><span class='lbl'></span>"
+                                        title="<input type='checkbox' class='ace check-box-element' id='chkCheckAll'><span class='lbl'></span>"
                                         class="center select-cell" headerClass="center select-cell">
                                     <input type="checkbox" class="ace check-box-element" name="checkList"
                                            id="checkbox_${tableList.userId}">
