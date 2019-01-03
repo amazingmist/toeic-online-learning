@@ -1,7 +1,10 @@
 package vn.myclass.controller.admin;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import vn.myclass.command.UserCommand;
+import vn.myclass.core.common.util.ExcelPoiUtil;
 import vn.myclass.core.common.util.FileUploadUtil;
 import vn.myclass.core.dto.RoleDTO;
 import vn.myclass.core.dto.UserDTO;
@@ -68,11 +71,12 @@ public class UserController extends HttpServlet {
         titleValueSet.add("urlType");
         FileUploadUtil fileUploadUtil = new FileUploadUtil();
         Object[] objects = fileUploadUtil.writeOrUpdateFile(req, titleValueSet, "excel");
-//        String urlType = objects
+        Map<String, String> returnValueMap = (Map<String, String>) objects[3];
+        String urlType = returnValueMap.get("urlType");
         try {
             UserCommand command = FormUtil.populate(UserCommand.class, req);
             UserDTO pojo = command.getPojo();
-            if (command.getUrlType() != null && command.getUrlType().equals(WebConstant.URL_EDIT)) {
+            if (urlType != null && urlType.equals(WebConstant.URL_EDIT)) {
                 if (command.getCrudAction() != null && command.getCrudAction().equals(WebConstant.INSERT_UPDATE_ACTION)) {
                     RoleDTO roleDTO = new RoleDTO();
                     roleDTO.setRoleId(command.getRoleId());
@@ -90,15 +94,22 @@ public class UserController extends HttpServlet {
                     }
                 }
                 req.getRequestDispatcher("/views/admin/user/edit.jsp").forward(req, resp);
-            }else if (command.getUrlType() != null && command.getUrlType().equals(WebConstant.URL_IMPORT)) {
+            }else if (urlType != null && urlType.equals(WebConstant.URL_IMPORT)) {
                 String fileLocation = (String) objects[1];
-
+                Workbook workbook = ExcelPoiUtil.getWorkBook(fileLocation);
+                Sheet sheet = workbook.getSheetAt(0);
+                sheet.forEach(row -> {
+                    row.forEach(cellValue -> {
+                        System.out.print(cellValue + "\t");
+                    });
+                    System.out.println();
+                });
 
 //                req.getRequestDispatcher("/views/admin/user/list.jsp").forward(req, resp);
             }
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
-            req.setAttribute(WebConstant.MESSAGE_RESPONSE, ex.toString());
+            req.setAttribute(WebConstant.MESSAGE_RESPONSE, ex.getMessage());
             req.getRequestDispatcher("/views/admin/error.jsp").forward(req, resp);
         }
     }
