@@ -1,7 +1,10 @@
 package vn.myclass.core.common.util;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.NumberToTextConverter;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
@@ -23,5 +26,33 @@ public class ExcelPoiUtil {
             workbook = new XSSFWorkbook(inputStream);
         }
         return workbook;
+    }
+
+    public static String getCellValue(Cell cell){
+        String cellValue = "";
+
+        if (cell == null)
+            return cellValue;
+
+        if (cell.getCellType().equals(CellType.STRING)){
+            cellValue = cell.getStringCellValue();
+
+        }else if (cell.getCellType().equals(CellType.BOOLEAN)){
+            cellValue = Boolean.toString(cell.getBooleanCellValue());
+
+        }else if (cell.getCellType().equals(CellType.NUMERIC)){
+            cellValue = NumberToTextConverter.toText(cell.getNumericCellValue());
+
+        }else if (cell.getCellType().equals(CellType.FORMULA)){
+            if (cell.getCellType().equals(CellType.STRING)){
+                cellValue = cell.getStringCellValue();
+
+            }else if (cell.getCellType().equals(CellType.NUMERIC)){
+                cellValue = NumberToTextConverter.toText(cell.getNumericCellValue());
+            }
+        }
+
+
+        return cellValue;
     }
 }

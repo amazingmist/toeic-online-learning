@@ -5,6 +5,11 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <display-name>Toeic Online Learning</display-name>
 
+    <!-- this config will remove jsessionid in url when start project -->
+    <session-config>
+        <tracking-mode>COOKIE</tracking-mode>
+    </session-config>
+
     <!-- Start Sitemesh-->
     <filter>
         <filter-name>sitemesh</filter-name>
