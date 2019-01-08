@@ -31,10 +31,7 @@ import java.util.*;
 public class UserController extends HttpServlet {
     ResourceBundle resourceBundle = ResourceBundle.getBundle("ApplicationResources");
     private final Logger logger = Logger.getLogger(this.getClass());
-    private final String URL_VALIDATE_IMPORT = "url_validate_import";
-    private final String USER_IMPORT_LIST = "user_import_list";
-    private final String USER_IMPORT_DATA = "user_import_data";
-
+    private final String SESSION_USER_IMPORT_LIST = "user_import_list";
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserCommand command = FormUtil.populate(UserCommand.class, req);
@@ -71,8 +68,8 @@ public class UserController extends HttpServlet {
         } else if (command.getUrlType() != null && command.getUrlType().equals(WebConstant.URL_IMPORT)) {
             req.getRequestDispatcher("/views/admin/user/importUser.jsp").forward(req, resp);
 
-        } else if (command.getUrlType() != null && command.getUrlType().equals(this.URL_VALIDATE_IMPORT)) {
-            List<UserImportDTO> excelValueList = (List<UserImportDTO>) SessionUtil.getInstance().getAttribute(req, this.USER_IMPORT_LIST);
+        } else if (command.getUrlType() != null && command.getUrlType().equals(WebConstant.URL_SHOW_VALIDATE_IMPORT)) {
+            List<UserImportDTO> excelValueList = (List<UserImportDTO>) SessionUtil.getInstance().getAttribute(req, this.SESSION_USER_IMPORT_LIST);
             command.setMaxPageItems(3);
             command.setUserImportDTOS(excelValueList);
             command.setTotalItems(excelValueList.size());
@@ -91,6 +88,11 @@ public class UserController extends HttpServlet {
         String urlType = returnValueMap.get("urlType");
         try {
             UserCommand command = FormUtil.populate(UserCommand.class, req);
+
+            if (urlType == null){
+                urlType = command.getUrlType();
+            }
+
             UserDTO pojo = command.getPojo();
 
             if (urlType != null && urlType.equals(WebConstant.URL_EDIT)) {
@@ -113,14 +115,17 @@ public class UserController extends HttpServlet {
                 }
                 req.getRequestDispatcher("/views/admin/user/edit.jsp").forward(req, resp);
 
-            } else if (urlType != null && urlType.equals(WebConstant.URL_IMPORT)) {
+            } else if (urlType != null && urlType.equals(WebConstant.URL_VALIDATE_IMPORT)) {
                 String fileLocation = (String) objects[1];
                 List<UserImportDTO> excelDataList = getExcelValueList(fileLocation);
                 validateExcelData(excelDataList);
-                SessionUtil.getInstance().putAttribute(req, this.USER_IMPORT_LIST, excelDataList);
-                resp.sendRedirect("/admin-user-import-validate.html?urlType=" + this.URL_VALIDATE_IMPORT);
-            }else if (command.getUrlType().equals(USER_IMPORT_DATA)){
-                System.out.println("a");
+                SessionUtil.getInstance().putAttribute(req, this.SESSION_USER_IMPORT_LIST, excelDataList);
+                resp.sendRedirect("/admin-user-import-validate.html?urlType=" + WebConstant.URL_SHOW_VALIDATE_IMPORT);
+
+            }else if (urlType != null && urlType.equals(WebConstant.URL_IMPORT)){
+                List<UserImportDTO> excelValueList = (List<UserImportDTO>) SessionUtil.getInstance().getAttribute(req, this.SESSION_USER_IMPORT_LIST);
+                SingletonServiceUtil.getUserServiceInstance().saveImportUsers(excelValueList);
+                resp.sendRedirect("/admin-user-list.html?urlType=" + WebConstant.URL_LIST);
             }
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);

@@ -20,7 +20,7 @@ public class FileUploadUtil {
     private final int MAX_MEMORY_SIZE = 1024 * 1024 * 3; // 3MB
     private final int MAX_REQUEST_SIZE = 1024 * 1024 * 50; // 50MB
 
-    public Object[] writeOrUpdateFile(HttpServletRequest request,  Set<String> titleValueSet, String path) {
+    public Object[] writeOrUpdateFile(HttpServletRequest request, Set<String> titleValueSet, String path) {
         ServletContext servletContext = request.getServletContext();
         String address = servletContext.getRealPath("file_upload");
 
@@ -55,32 +55,34 @@ public class FileUploadUtil {
             isSuccess = false;
         }
 
-        for (FileItem item : items) {
+        if (items != null) {
+            for (FileItem item : items) {
 //            check if this field is a file upload and it have a submitted file
-            if (!item.isFormField() && StringUtils.isNotBlank(item.getName())) {
-                File uploadedFile = new File(address + File.separator + path, item.getName());
-                fileLocation = uploadedFile.getAbsolutePath();
-                fileName = uploadedFile.getName();
+                if (!item.isFormField() && StringUtils.isNotBlank(item.getName())) {
+                    File uploadedFile = new File(address + File.separator + path, item.getName());
+                    fileLocation = uploadedFile.getAbsolutePath();
+                    fileName = uploadedFile.getName();
 
 //                check if this file is already existed
-                try {
-                    uploadedFile.delete();
-                    item.write(uploadedFile);
-                } catch (Exception e) {
-                    logger.error(e.getMessage(), e);
-                    isSuccess = false;
-                    fileLocation = null;
-                    fileName = null;
-                }
-            }else if (item.isFormField()){
+                    try {
+                        uploadedFile.delete();
+                        item.write(uploadedFile);
+                    } catch (Exception e) {
+                        logger.error(e.getMessage(), e);
+                        isSuccess = false;
+                        fileLocation = null;
+                        fileName = null;
+                    }
+                } else if (item.isFormField()) {
 //                this file is not a file upload
-                if (titleValueSet != null){
-                    String fieldName = item.getFieldName();
-                    String fieldValue = item.getString();
+                    if (titleValueSet != null) {
+                        String fieldName = item.getFieldName();
+                        String fieldValue = item.getString();
 
 //                    check if this field is required return
-                    if (titleValueSet.contains(fieldName)){
-                        returnValueMap.put(fieldName, fieldValue);
+                        if (titleValueSet.contains(fieldName)) {
+                            returnValueMap.put(fieldName, fieldValue);
+                        }
                     }
                 }
             }

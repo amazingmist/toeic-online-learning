@@ -60,7 +60,7 @@
                                                                 bundle="${lang}"/> </label>
                             <input type="file" id="inputFile" name="file">
                         </div>
-                        <input type="hidden" name="urlType" value="url_import">
+                        <input type="hidden" name="urlType" value="url_validate_import">
                         <button type="submit" id="validateFile" class="btn btn-primary btn-sm" disabled>
                             <fmt:message key="label.import.validate" bundle="${lang}"/></button>
                     </form>
@@ -95,7 +95,7 @@
                             </fmt:bundle>
                         </div>
                         <form action="${doImportUrl}" method="post">
-                            <input type="hidden" name="urlType" value="user_import_data">
+                            <input type="hidden" name="urlType" value="url_import">
                             <button type="submit" class="btn btn-success btn-sm"><fmt:message
                                     key="label.import.validate.done"
                                     bundle="${lang}"/></button>
