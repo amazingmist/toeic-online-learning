@@ -40,9 +40,9 @@ public class UserController extends HttpServlet {
         UserDTO dto = command.getPojo();
         if (command.getUrlType() != null && command.getUrlType().equals(WebConstant.URL_LIST)) {
             Map<String, Object> properties = new HashMap<>();
-            Object[] finded = SingletonServiceUtil.getUserServiceInstance().findByProperties(properties, command.getSortExpression(), command.getSortDirection(), command.getFirstItem(), command.getMaxPageItems());
-            command.setListResult((List<UserDTO>) finded[1]);
-            command.setTotalItems(Integer.parseInt(finded[0].toString()));
+            Object[] objects = SingletonServiceUtil.getUserServiceInstance().findByProperties(properties, command.getSortExpression(), command.getSortDirection(), command.getFirstItem(), command.getMaxPageItems());
+            command.setListResult((List<UserDTO>) objects[1]);
+            command.setTotalItems(Integer.parseInt(objects[0].toString()));
 
             req.setAttribute(WebConstant.LIST_ITEMS, command);
 
