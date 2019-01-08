@@ -1,10 +1,14 @@
 package vn.myclass.controller.admin;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import vn.myclass.command.ListenGuidelineCommand;
 import vn.myclass.core.common.util.FileUploadUtil;
+import vn.myclass.core.dto.ListenGuidelineDTO;
 import vn.myclass.core.web.common.WebConstant;
 import vn.myclass.core.web.util.FormUtil;
+import vn.myclass.core.web.util.RequestUtil;
+import vn.myclass.core.web.util.SingletonServiceUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,12 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 
-//@WebServlet("/admin-guideline-listen-list.html")
 @WebServlet(urlPatterns = {"/admin-guideline-listen-list.html", "/admin-guideline-listen-edit.html"})
 public class ListenGuidelineController extends HttpServlet {
     private final Logger logger = Logger.getLogger(this.getClass());
@@ -38,13 +38,8 @@ public class ListenGuidelineController extends HttpServlet {
 
         ListenGuidelineCommand command = FormUtil.populate(ListenGuidelineCommand.class, req);
 
-        /*command.setMaxPageItems(2);
-        RequestUtil.initSearchBean(req, command);
-
-        Object[] finded = listenGuidelineService.findListenGuidelineByProperty(null, null, command.getSortExpression(), command.getSortDirection(), command.getFirstItem(), command.getMaxPageItems());
-
-        command.setListResult((List<ListenGuidelineDTO>) finded[1]);
-        command.setTotalItems(Integer.parseInt(finded[0].toString()));*/
+        command.setMaxPageItems(4);
+        executeSearch(req, command);
 
         req.setAttribute(WebConstant.LIST_ITEMS, command);
         if (command.getUrlType() != null && command.getUrlType().equals(WebConstant.URL_LIST)) {
@@ -52,6 +47,22 @@ public class ListenGuidelineController extends HttpServlet {
         } else if (command.getUrlType() != null && command.getUrlType().equals(WebConstant.URL_EDIT)) {
             req.getRequestDispatcher("/views/admin/listenguideline/edit.jsp").forward(req, resp);
         }
+    }
+
+    private void executeSearch(HttpServletRequest req, ListenGuidelineCommand command) {
+        RequestUtil.initSearchBean(req, command);
+        Map<String, Object> propertiesMap = buildPropertiesMap(command);
+        Object[] objects = SingletonServiceUtil.getListenGuidelineServiceInstance().findListenGuidelineByProperty(propertiesMap, command.getSortExpression(), command.getSortDirection(), command.getFirstItem(), command.getMaxPageItems());
+        command.setListResult((List<ListenGuidelineDTO>) objects[1]);
+        command.setTotalItems(Integer.parseInt(objects[0].toString()));
+    }
+
+    private Map<String, Object> buildPropertiesMap(ListenGuidelineCommand command) {
+        Map<String, Object> propertiesMap = new HashMap<>();
+        if (StringUtils.isNotBlank(command.getPojo().getTitle())) {
+            propertiesMap.put("title", command.getPojo().getTitle());
+        }
+        return propertiesMap;
     }
 
     @Override
@@ -80,12 +91,10 @@ public class ListenGuidelineController extends HttpServlet {
 
     private ListenGuidelineCommand mappingReturnValueMapToCommand(Map<String, String> returnValueMap, ListenGuidelineCommand command) {
 //        mapping all returned value in map to command
-        for (Map.Entry<String, String> entry : returnValueMap.entrySet()) {
-            if (entry.getKey().equals("pojo.title")) {
-                command.getPojo().setTitle(entry.getValue());
-            } else if (entry.getKey().equals("pojo.content")) {
-                command.getPojo().setContent(entry.getValue());
-            }
+        if (returnValueMap.containsKey("pojo.title")) {
+            command.getPojo().setTitle(returnValueMap.get("pojo.title"));
+        } else if (returnValueMap.containsKey("pojo.content")) {
+            command.getPojo().setContent(returnValueMap.get("pojo.content"));
         }
         return command;
     }
