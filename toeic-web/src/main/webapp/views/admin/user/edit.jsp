@@ -27,7 +27,7 @@
                         <div class="form-group">
                             <label for="name"><fmt:message key="label.user.name" bundle="${lang}"/>:</label>
                             <input type="text" class="form-control" id="name" value="${item.pojo.name}"
-                                   name="pojo.name" required>
+                                   name="pojo.name" required <c:if test="${not empty item.pojo.userId}">disabled</c:if>>
                         </div>
                         <div class="form-group">
                             <label for="password"><fmt:message key="label.user.password" bundle="${lang}"/>:</label>

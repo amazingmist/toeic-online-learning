@@ -125,6 +125,7 @@ public class UserController extends HttpServlet {
             }else if (urlType != null && urlType.equals(WebConstant.URL_IMPORT)){
                 List<UserImportDTO> excelValueList = (List<UserImportDTO>) SessionUtil.getInstance().getAttribute(req, this.SESSION_USER_IMPORT_LIST);
                 SingletonServiceUtil.getUserServiceInstance().saveImportUsers(excelValueList);
+                SessionUtil.getInstance().removeAttribute(req, this.SESSION_USER_IMPORT_LIST);
                 resp.sendRedirect("/admin-user-list.html?urlType=" + WebConstant.URL_LIST);
             }
         } catch (Exception ex) {

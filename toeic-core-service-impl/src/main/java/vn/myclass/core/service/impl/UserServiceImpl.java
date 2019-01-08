@@ -51,10 +51,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO updateUser(UserDTO userDTO) {
-        UserEntity entity = UserBeanUtil.dto2Entity(userDTO);
+        UserDTO oldUserDTO = this.findById(userDTO.getUserId());
+//        set new data to old dto
+        oldUserDTO.setFullName(userDTO.getFullName());
+        oldUserDTO.setPassword(userDTO.getPassword());
+        oldUserDTO.setRoleDTO(userDTO.getRoleDTO());
+
+        UserEntity entity = UserBeanUtil.dto2Entity(oldUserDTO);
         entity = SingletonDaoUtil.getUserDaoInstance().update(entity);
-        userDTO = UserBeanUtil.entity2Dto(entity);
-        return userDTO;
+        oldUserDTO = UserBeanUtil.entity2Dto(entity);
+        return oldUserDTO;
     }
 
     @Override
