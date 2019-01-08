@@ -19,17 +19,18 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
     public AbstractDao() {
         // generic < x , y > as array
         // set persistenceClass = T
-        this.persistenceClass = (Class<T>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+        this.persistenceClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
     }
 
-    private String getPersistenceClassName(){
+    private String getPersistenceClassName() {
         return this.persistenceClass.getSimpleName();
     }
-    protected Class<T> getPersistenceClass(){
+
+    protected Class<T> getPersistenceClass() {
         return this.persistenceClass;
     }
 
-    protected Session getSession(){
+    protected Session getSession() {
         return HibernateUtil.getSessionFactory().openSession();
     }
 
@@ -52,10 +53,10 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         try {
             result = (T) session.merge(entity);
             transaction.commit();
-        }catch (HibernateException ex){
+        } catch (HibernateException ex) {
             transaction.rollback();
             throw ex;
-        }finally {
+        } finally {
             session.close();
         }
         return result;
@@ -67,10 +68,10 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         try {
             session.persist(entity);
             transaction.commit();
-        }catch (HibernateException ex){
+        } catch (HibernateException ex) {
             transaction.rollback();
             throw ex;
-        }finally {
+        } finally {
             session.close();
         }
         return entity;
@@ -82,7 +83,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         try {
             // note: the first parameter is class type, so we pass persistenceClass at this situation
             result = (T) session.get(this.getPersistenceClass(), id);
-            if (result == null){
+            if (result == null) {
                 throw new ObjectNotFoundException("NOT FOUND " + id, this.getPersistenceClassName());
             }
         } finally {
@@ -106,19 +107,19 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             }
 
 //            set sort direction
-            if (sortExpression != null && sortDirection != null){
+            if (sortExpression != null && sortDirection != null) {
                 Order order = sortDirection.equals(CoreConstant.SORT_ASC) ?
                         Order.asc(sortExpression) : Order.desc(sortExpression);
                 cr.addOrder(order);
             }
 
 //            set start position offset
-            if (offset != null && offset >= 0){
+            if (offset != null && offset >= 0) {
                 cr.setFirstResult(offset);
             }
 
 //            set limit row
-            if (limit != null && limit > 0){
+            if (limit != null && limit > 0) {
                 cr.setMaxResults(limit);
             }
 
@@ -148,18 +149,33 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         Transaction transaction = session.beginTransaction();
         int countSuccess = 0;
         try {
-            for (ID id: ids) {
+            for (ID id : ids) {
                 Object object = session.get(this.getPersistenceClass(), id);
                 session.delete(object);
                 countSuccess++;
             }
             transaction.commit();
-        }catch (HibernateException ex){
+        } catch (HibernateException ex) {
             transaction.rollback();
             throw ex;
-        }finally {
+        } finally {
             session.close();
         }
         return countSuccess;
+    }
+
+    @Override
+    public T findUniqueEqual(String property, Object value) {
+        T result;
+        Session session = this.getSession();
+        try {
+            // note: the first parameter is class type, so we pass persistenceClass at this situation
+            Criteria cr = session.createCriteria(this.getPersistenceClass());
+            cr.add(Restrictions.eq(property, value));
+            result = (T) cr.uniqueResult();
+        } finally {
+            session.close();
+        }
+        return result;
     }
 }

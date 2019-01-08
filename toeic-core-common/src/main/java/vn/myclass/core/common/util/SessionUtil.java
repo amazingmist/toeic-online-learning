@@ -18,11 +18,11 @@ public class SessionUtil {
         req.getSession().setAttribute(key, value);
     }
 
-    public static Object getAttribute(HttpServletRequest req, String key){
+    public static Object getAttribute(HttpServletRequest req, String key) {
         return req.getSession().getAttribute(key);
     }
 
-    public static void removeAttribute(HttpServletRequest req, String key){
+    public static void removeAttribute(HttpServletRequest req, String key) {
         req.getSession().removeAttribute(key);
     }
 }

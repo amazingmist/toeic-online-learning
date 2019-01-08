@@ -1,7 +1,9 @@
 package vn.myclass.core.service;
 
 import vn.myclass.core.dto.UserDTO;
+import vn.myclass.core.dto.UserImportDTO;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UserService {
@@ -10,4 +12,5 @@ public interface UserService {
     UserDTO findById(Integer id);
     void saveUser(UserDTO userDTO);
     UserDTO updateUser(UserDTO userDTO);
+    void validateImportUsers(List<UserImportDTO> userImportDTOS);
 }

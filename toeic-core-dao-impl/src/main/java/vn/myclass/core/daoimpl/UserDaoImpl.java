@@ -8,8 +8,10 @@ import vn.myclass.core.dao.UserDao;
 import vn.myclass.core.data.daoimpl.AbstractDao;
 import vn.myclass.core.persistence.entity.UserEntity;
 
+import java.util.List;
+
 public class UserDaoImpl extends AbstractDao<Integer, UserEntity> implements UserDao {
-    public UserEntity findUserByNameAndPassword(String name, String password) {
+    public UserEntity findByNameAndPassword(String name, String password) {
         UserEntity entity;
         Session session = this.getSession();
         try {
@@ -23,5 +25,21 @@ public class UserDaoImpl extends AbstractDao<Integer, UserEntity> implements Use
             session.close();
         }
         return entity;
+    }
+
+    @Override
+    public List<UserEntity> findByNameInNameList(List<String> nameList) {
+        List<UserEntity> userEntityList = null;
+        Session session = this.getSession();
+        try {
+            Criteria cr = session.createCriteria(this.getPersistenceClass());
+            cr.add(Restrictions.in("name", nameList));
+            userEntityList = cr.list();
+        }catch (HibernateException e) {
+            throw e;
+        }finally {
+            session.close();
+        }
+        return userEntityList;
     }
 }

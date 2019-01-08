@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp" %>
-<c:url var="tableRequestURI" value="/admin-user-list.html">
+<c:url var="requestURI" value="/admin-user-list.html">
     <c:if test="${empty param.urlType}">
         <c:param name="urlType" value="url_list"/>
     </c:if>
@@ -100,13 +100,13 @@
                         </div>
                     </div>
                     <div class="table-responsive">
-                        <fmt:bundle basename="ApplicationRescources">
+                        <fmt:bundle basename="ApplicationResources">
                             <display:table id="tableList" name="items.listResult" partialList="true"
                                            size="${items.totalItems}" pagesize="${items.maxPageItems}"
                                            class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
                                            style="margin: 3em 0 1.5em;"
                                            sort="external"
-                                           requestURI="${tableRequestURI}">
+                                           requestURI="${requestURI}">
                                 <display:column
                                         title="<input type='checkbox' class='ace check-box-element' id='chkCheckAll'><span class='lbl'></span>"
                                         class="center select-cell" headerClass="center select-cell">
@@ -116,7 +116,7 @@
                                 </display:column>
                                 <display:column property="name" titleKey="label.user.name" sortable="true"
                                                 sortName="name"/>
-                                <display:column property="fullName" titleKey="label.user.fullname" sortable="true"
+                                <display:column property="fullName" titleKey="label.user.fullName" sortable="true"
                                                 sortName="fullName"/>
                                 <display:column titleKey="label.action">
 
@@ -135,7 +135,7 @@
                             </display:table>
                         </fmt:bundle>
                     </div>
-                    <form action="${tableRequestURI}" method="get" id="reloadAfterAction">
+                    <form action="${requestURI}" method="get" id="reloadAfterAction">
                         <input type="hidden" name="urlType" id="urlTypeReload">
                         <input type="hidden" name="crudAction" id="crudActionReload">
                     </form>

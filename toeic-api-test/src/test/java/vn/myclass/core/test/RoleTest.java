@@ -1,5 +1,6 @@
 package vn.myclass.core.test;
 
+import org.testng.annotations.Test;
 import vn.myclass.core.dao.RoleDao;
 import vn.myclass.core.daoimpl.RoleDaoImpl;
 import vn.myclass.core.persistence.entity.RoleEntity;
@@ -61,5 +62,13 @@ public class RoleTest {
         List<Integer> list = new ArrayList<Integer>();
         list.add(3);
         roleDao.delete(list);
+    }
+
+//    @Test
+    public void findUniqueEqual(){
+        RoleDao roleDao = new RoleDaoImpl();
+        String roleName = "admin";
+        RoleEntity roleEntity = roleDao.findUniqueEqual("name", roleName);
+        System.out.println(roleEntity.getRoleId());
     }
 }

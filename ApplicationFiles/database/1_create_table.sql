@@ -2,7 +2,7 @@ use toeic_online_learning;
 
 create table user(
 	  userid int primary key auto_increment,
-    name varchar(255),
+    name varchar(255) UNIQUE,
     password varchar(255),
     fullname varchar(300),
     createddate timestamp,

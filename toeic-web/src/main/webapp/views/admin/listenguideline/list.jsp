@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp" %>
-<c:url var="requestURI" value="/admin-guideline-listen-list.html"></c:url>
 <c:url value='/admin-guideline-listen-edit.html' var="userEditUrl">
     <c:param name="urlType" value="url_edit"></c:param>
 </c:url>
@@ -65,13 +64,13 @@
                         </div>
                     </c:if>
                     <div class="table-responsive">
-                        <fmt:bundle basename="ApplicationRescources">
+                        <fmt:bundle basename="ApplicationResources">
                             <display:table id="tableList" name="items.listResult" partialList="true"
                                            size="${items.totalItems}" pagesize="${items.maxPageItems}"
                                            class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
                                            style="margin: 3em 0 1.5em;"
                                            sort="external"
-                                           requestURI="${requestURI}">
+                                           requestURI="">
                                 <display:column property="title" titleKey="label.guideline.title" sortable="true"
                                                 sortName="title"/>
                                 <display:column property="content" titleKey="label.guideline.content" sortable="true"

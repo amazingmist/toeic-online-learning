@@ -10,7 +10,7 @@ public class UserTest {
 //        String name = "thanhtai";
 //        String password = "12345";
 //        UserDao userDao = new UserDaoImpl();
-//        UserEntity entity = userDao.findUserByNameAndPassword(name, password);
+//        UserEntity entity = userDao.findByNameAndPassword(name, password);
 //        System.out.println(entity.getName());
         RoleDTO roleDTO = new RoleDTO();
         roleDTO.setRoleId(1);

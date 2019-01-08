@@ -6,7 +6,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp" %>
-<c:url var="formUrl" value="/admin-user-import.html"></c:url>
+<c:url var="validateFormUrl" value="/admin-user-import-validate.html"></c:url>
+<c:url var="doImportUrl" value="/admin-user-import.html"></c:url>
 <html>
 <head>
     <title><fmt:message key="label.user.import" bundle="${lang}"/></title>
@@ -51,24 +52,82 @@
             <div class="row">
                 <div class="col-xs-12">
                     <!-- PAGE CONTENT BEGINS -->
-                    <form action="${formUrl}" enctype="multipart/form-data" method="post">
-                        <div class="form-group">
+                    <form action="${validateFormUrl}" enctype="multipart/form-data" method="post"
+                          onsubmit="return checkIsSeletedFile();">
+                        <div class=" form-group
+                    ">
                             <label for="inputFile"><fmt:message key="label.import.excel.title"
                                                                 bundle="${lang}"/> </label>
                             <input type="file" id="inputFile" name="file">
                         </div>
                         <input type="hidden" name="urlType" value="url_import">
-                        <button type="submit" class="btn btn-default btn-sm"><fmt:message key="label.done"
-                                                                                          bundle="${lang}"/></button>
+                        <button type="submit" id="validateFile" class="btn btn-primary btn-sm" disabled>
+                            <fmt:message key="label.import.validate" bundle="${lang}"/></button>
                     </form>
                     <!-- PAGE CONTENT ENDS -->
                 </div>
                 <!-- /.col -->
             </div>
             <!-- /.row -->
+
+            <c:if test="${not empty items.userImportDTOS}">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="table-responsive">
+                            <fmt:bundle basename="ApplicationResources">
+                                <display:table id="tableList" name="items.userImportDTOS" partialList="true"
+                                               size="${items.totalItems}" pagesize="${items.maxPageItems}"
+                                               class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
+                                               style="margin: 3em 0 1.5em;"
+                                               sort="external"
+                                               requestURI="">
+                                    <display:column property="name" titleKey="label.user.name" sortable="true"
+                                                    sortName="name"/>
+                                    <display:column property="password" titleKey="label.user.password" sortable="true"
+                                                    sortName="password"/>
+                                    <display:column property="fullName" titleKey="label.user.fullName" sortable="true"
+                                                    sortName="fullName"/>
+                                    <display:column property="roleName" titleKey="label.user.role" sortable="true"
+                                                    sortName="roleName"/>
+                                    <display:column property="error" titleKey="label.import.error.info"
+                                                    class="text-danger"/>
+                                </display:table>
+                            </fmt:bundle>
+                        </div>
+                        <form action="${doImportUrl}" method="post">
+                            <input type="hidden" name="urlType" value="user_import_data">
+                            <button type="submit" class="btn btn-success btn-sm"><fmt:message
+                                    key="label.import.validate.done"
+                                    bundle="${lang}"/></button>
+                        </form>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </c:if>
         </div>
         <!-- /.page-content -->
     </div>
 </div>
+
+<script type="application/javascript">
+    $(document).ready(function () {
+        $('#inputFile').change(function () {
+            if ($('#inputFile').val() != '') {
+                $('#validateFile').attr('disabled', false);
+            }
+        })
+    })
+
+    function checkIsSeletedFile() {
+        if ($('#inputFile').val() == '') {
+            alert("Vui lòng chọn file cần import");
+            $('#validateFile').attr('disabled', true);
+            return false;
+        }
+
+        return true;
+    }
+</script>
 </body>
 </html>

@@ -1,6 +1,8 @@
 package vn.myclass.core.service.impl;
 
 import vn.myclass.core.dto.UserDTO;
+import vn.myclass.core.dto.UserImportDTO;
+import vn.myclass.core.persistence.entity.RoleEntity;
 import vn.myclass.core.persistence.entity.UserEntity;
 import vn.myclass.core.service.UserService;
 import vn.myclass.core.service.util.SingletonDaoUtil;
@@ -8,13 +10,14 @@ import vn.myclass.core.utils.UserBeanUtil;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class UserServiceImpl implements UserService {
     @Override
     public UserDTO findRoleByUser(UserDTO userDTO) {
-        UserEntity entity = SingletonDaoUtil.getUserDaoInstance().findUserByNameAndPassword(userDTO.getName(), userDTO.getPassword());
+        UserEntity entity = SingletonDaoUtil.getUserDaoInstance().findByNameAndPassword(userDTO.getName(), userDTO.getPassword());
         return UserBeanUtil.entity2Dto(entity);
     }
 
@@ -52,5 +55,69 @@ public class UserServiceImpl implements UserService {
         entity = SingletonDaoUtil.getUserDaoInstance().update(entity);
         userDTO = UserBeanUtil.entity2Dto(entity);
         return userDTO;
+    }
+
+    @Override
+    public void validateImportUsers(List<UserImportDTO> userImportDTOS) {
+        List<String> nameList = new ArrayList<>();
+        List<String> roleList = new ArrayList<>();
+
+//        put all names and roles in userImportDTOS to each list
+        userImportDTOS.forEach(userImportDTO -> {
+            if (userImportDTO.isValid()) {
+                nameList.add(userImportDTO.getName());
+
+                if (!roleList.contains(userImportDTO.getRoleName())) {
+                    roleList.add(userImportDTO.getRoleName());
+                }
+            }
+        });
+
+//        these map will contains all of the names and roles retrieve from database
+        Map<String, UserEntity> userEntityMap = new HashMap<>();
+        Map<String, RoleEntity> roleEntityMap = new HashMap<>();
+
+//        Put all of the names retrieved from db to map
+        if (nameList.size() > 0) {
+            List<UserEntity> userEntityList = SingletonDaoUtil.getUserDaoInstance().findByNameInNameList(nameList);
+            userEntityList.forEach(userEntity -> {
+                userEntityMap.put(userEntity.getName().toLowerCase(), userEntity);
+            });
+        }
+
+//        Put all of the roles retrieved from db to map
+        if (roleList.size() > 0) {
+            List<RoleEntity> roleEntityList = SingletonDaoUtil.getRoleDaoInstance().findByNameInNameList(roleList);
+            roleEntityList.forEach(roleEntity -> {
+                roleEntityMap.put(roleEntity.getName().toLowerCase(), roleEntity);
+            });
+        }
+
+//        Iteration over the list to validate it
+        userImportDTOS.forEach(userImportDTO -> {
+//            validate if the dto still is valid
+            if (userImportDTO.isValid()) {
+                String msg = userImportDTO.getError();
+                if ((userEntityMap.containsKey(userImportDTO.getName().toLowerCase()))) {
+                    if (!msg.equals("")) {
+                        msg += "<br/>";
+                    }
+                    msg += "Tên đăng nhập đã tồn tại trong hệ thống";
+                }
+
+                if (!roleEntityMap.containsKey(userImportDTO.getRoleName().toLowerCase())) {
+                    if (!msg.equals("")) {
+                        msg += "<br/>";
+                    }
+                    msg += "Vai trò không tồn tại trong hệ thống";
+                }
+
+                if (!msg.equals("")) {
+                    userImportDTO.setValid(false);
+                    userImportDTO.setError(msg);
+                }
+            }
+        });
+
     }
 }

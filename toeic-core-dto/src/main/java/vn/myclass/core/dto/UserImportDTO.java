@@ -7,6 +7,9 @@ public class UserImportDTO implements Serializable {
     private String password;
     private String fullName;
     private String roleName;
+    private boolean isValid = true;
+    private String error = "";
+
 
     public String getName() {
         return name;
@@ -38,5 +41,21 @@ public class UserImportDTO implements Serializable {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+    public boolean isValid() {
+        return isValid;
+    }
+
+    public void setValid(boolean valid) {
+        isValid = valid;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
     }
 }
