@@ -51,7 +51,7 @@
                 <form class="form-search" action="${listenGuidelineSearchUrl}" method="get">
                     <input type="hidden" name="urlType" value="url_list">
                      <span class="input-icon">
-                     <input type="text" name="pojo.title" placeholder="Search ..." class="nav-search-input" id="nav-search-input"
+                     <input type="text" name="pojo.title" value="${items.pojo.title}" placeholder="Search ..." class="nav-search-input" id="nav-search-input"
                             autocomplete="off">
                      <i class="ace-icon fa fa-search nav-search-icon"></i>
                      </span>

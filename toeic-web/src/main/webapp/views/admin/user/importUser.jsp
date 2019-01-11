@@ -81,11 +81,16 @@
                                                style="margin: 3em 0 1.5em;"
                                                sort="external"
                                                requestURI="">
-                                    <display:column property="name" titleKey="label.user.name" class="${tableList.isValid ? '' : 'danger'}"/>
-                                    <display:column property="password" titleKey="label.user.password" class="${tableList.isValid ? '' : 'danger'}"/>
-                                    <display:column property="fullName" titleKey="label.user.fullName" class="${tableList.isValid ? '' : 'danger'}"/>
-                                    <display:column property="roleName" titleKey="label.user.role" class="${tableList.isValid ? '' : 'danger'}"/>
-                                    <display:column property="error" titleKey="label.import.error.info" class="${tableList.isValid ? '' : 'danger'}"/>
+                                    <display:column property="name" titleKey="label.user.name"
+                                                    class="${tableList.isValid ? '' : 'danger'}"/>
+                                    <display:column property="password" titleKey="label.user.password"
+                                                    class="${tableList.isValid ? '' : 'danger'}"/>
+                                    <display:column property="fullName" titleKey="label.user.fullName"
+                                                    class="${tableList.isValid ? '' : 'danger'}"/>
+                                    <display:column property="roleName" titleKey="label.user.role"
+                                                    class="${tableList.isValid ? '' : 'danger'}"/>
+                                    <display:column property="error" titleKey="label.import.error.info"
+                                                    class="${tableList.isValid ? '' : 'danger'}"/>
                                 </display:table>
                             </fmt:bundle>
                         </div>
@@ -105,24 +110,26 @@
     </div>
 </div>
 
-<script type="application/javascript">
-    $(document).ready(function () {
-        $('#inputFile').change(function () {
-            if ($('#inputFile').val() != '') {
-                $('#validateFile').attr('disabled', false);
-            }
+<content tag="local_script">
+    <script type="application/javascript">
+        $(document).ready(function () {
+            $('#inputFile').change(function () {
+                if ($('#inputFile').val() != '') {
+                    $('#validateFile').attr('disabled', false);
+                }
+            })
         })
-    })
 
-    function checkIsSeletedFile() {
-        if ($('#inputFile').val() == '') {
-            alert("Vui lòng chọn file cần import");
-            $('#validateFile').attr('disabled', true);
-            return false;
+        function checkIsSeletedFile() {
+            if ($('#inputFile').val() == '') {
+                alert("Vui lòng chọn file cần import");
+                $('#validateFile').attr('disabled', true);
+                return false;
+            }
+
+            return true;
         }
-
-        return true;
-    }
-</script>
+    </script>
+</content>
 </body>
 </html>

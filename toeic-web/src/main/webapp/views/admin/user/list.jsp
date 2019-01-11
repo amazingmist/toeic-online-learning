@@ -148,49 +148,51 @@
 </div>
 <!-- Modal -->
 <div class="modal fade" id="addNewModal" role="dialog"></div>
-<script type="application/javascript">
-    $(document).ready(function () {
+<content tag="local_script">
+    <script type="application/javascript">
+        $(document).ready(function () {
 
-    });
+        });
 
-    function showEditFormModal(btn) {
-        var id = $(btn).data('id');
-        var submitUrl = '${userAddNewUrl}';
+        function showEditFormModal(btn) {
+            var id = $(btn).data('id');
+            var submitUrl = '${userAddNewUrl}';
 
-        if (id != undefined) {
-            submitUrl = '${userEditUrl}' + id;
+            if (id != undefined) {
+                submitUrl = '${userEditUrl}' + id;
+            }
+
+            $('#addNewModal').load(submitUrl, function () {
+                $('#addNewModal').modal('toggle');
+                addEditFormEvent();
+            });
         }
 
-        $('#addNewModal').load(submitUrl, function () {
-            $('#addNewModal').modal('toggle');
-            addEditFormEvent();
-        });
-    }
+        function addEditFormEvent() {
+            $('#editUserForm').submit(function (evt) {
+                evt.preventDefault();
+                $('#crudActionEdit').val('insert_update');
+                submitEditForm();
+            });
+        }
 
-    function addEditFormEvent() {
-        $('#editUserForm').submit(function (evt) {
-            evt.preventDefault();
-            $('#crudActionEdit').val('insert_update');
-            submitEditForm();
-        });
-    }
-
-    function submitEditForm() {
-        $.ajax({
-            type: $('#editUserForm').attr("method"),
-            url: $('#editUserForm').attr('action'),
-            data: $('#editUserForm').serialize(),
-            dataType: 'html',
-            success: function (resp) {
-                $('#urlTypeReload').val('url_list');
-                $('#crudActionReload').val(resp.trim());
-                $('#reloadAfterAction').submit();
-            },
-            error: function (resp) {
-                console.log(resp);
-            }
-        });
-    }
-</script>
+        function submitEditForm() {
+            $.ajax({
+                type: $('#editUserForm').attr("method"),
+                url: $('#editUserForm').attr('action'),
+                data: $('#editUserForm').serialize(),
+                dataType: 'html',
+                success: function (resp) {
+                    $('#urlTypeReload').val('url_list');
+                    $('#crudActionReload').val(resp.trim());
+                    $('#reloadAfterAction').submit();
+                },
+                error: function (resp) {
+                    console.log(resp);
+                }
+            });
+        }
+    </script>
+</content>
 </body>
 </html>

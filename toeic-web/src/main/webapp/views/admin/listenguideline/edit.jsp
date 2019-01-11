@@ -72,5 +72,8 @@
         <!-- /.page-content -->
     </div>
 </div>
+<content tag="local_script">
+    <script type="application/javascript" src="/ckeditor/ckeditor.js"></script>
+</content>
 </body>
 </html>

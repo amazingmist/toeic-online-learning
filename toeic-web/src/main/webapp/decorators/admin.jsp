@@ -16,8 +16,6 @@
     <!-- ace styles -->
     <link rel="stylesheet" href="<c:url value='/template/admin/assets/css/ace.min.css'/>" class="ace-main-stylesheet"
           id="main-ace-style"/>
-    <%-- jquery library --%>
-    <script src="<c:url value='/template/admin/assets/js/jquery.2.1.1.min.js'/>"></script>
     <%-- my custome css --%>
     <link rel="stylesheet" href="<c:url value="/template/admin/css/global_admin_style.css"/>">
     <dec:head></dec:head>
@@ -38,6 +36,8 @@
         <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
     </a>
 </div>
+<%-- jquery library --%>
+<script src="<c:url value='/template/admin/assets/js/jquery.2.1.1.min.js'/>"></script>
 <!-- ace settings handler -->
 <script src="<c:url value='/template/admin/assets/js/ace-extra.min.js'/>"></script>
 <script src="<c:url value='/template/admin/assets/js/bootstrap.min.js'/>"></script>
@@ -57,5 +57,6 @@
 <script src="<c:url value='/template/admin/assets/js/ace.min.js'/>"></script>
 <%-- my custom js --%>
 <script src="<c:url value="/template/admin/js/global_admin_script.js"/>"></script>
+<dec:getProperty property="page.local_script"></dec:getProperty>
 </body>
 </html>
