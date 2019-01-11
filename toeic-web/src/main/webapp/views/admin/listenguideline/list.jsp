@@ -127,6 +127,22 @@
                                                 sortName="title"/>
                                 <display:column property="content" titleKey="label.guideline.content" sortable="true"
                                                 sortName="content"/>
+                                <display:column titleKey="label.action">
+                                    <c:url var="listenGuidelineRowEditUrl" value="/admin-guideline-listen-edit.html">
+                                        <c:param name="urlType" value="url_edit"></c:param>
+                                        <c:param name="pojo.listenGuideLineId" value="${tableList.listenGuideLineId}"></c:param>
+                                    </c:url>
+                                    <div class="hidden-sm hidden-xs btn-group">
+                                        <a href="${listenGuidelineRowEditUrl}" class="btn btn-xs btn-info" data-toggle="tooltip"
+                                                title="<fmt:message key="label.edit" bundle="${lang}"/>">
+                                            <i class="ace-icon fa fa-pencil bigger-120"></i>
+                                        </a>
+                                        <button class="btn btn-xs btn-danger" data-toggle="tooltip"
+                                                title="<fmt:message key="label.delete" bundle="${lang}"/>">
+                                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                        </button>
+                                    </div>
+                                </display:column>
                             </display:table>
                         </fmt:bundle>
                     </div>

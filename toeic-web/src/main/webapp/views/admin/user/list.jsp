@@ -117,7 +117,6 @@
                                 <display:column property="fullName" titleKey="label.user.fullName" sortable="true"
                                                 sortName="fullName"/>
                                 <display:column titleKey="label.action">
-
                                     <div class="hidden-sm hidden-xs btn-group">
                                         <button onclick="showEditFormModal(this)" data-id="${tableList.userId}"
                                                 class="btn btn-xs btn-info" data-toggle="tooltip"

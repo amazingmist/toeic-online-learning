@@ -9,6 +9,7 @@ import vn.myclass.core.web.common.WebConstant;
 import vn.myclass.core.web.util.FormUtil;
 import vn.myclass.core.web.util.RequestUtil;
 import vn.myclass.core.web.util.SingletonServiceUtil;
+import vn.myclass.core.web.util.WebCommonUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,34 +23,45 @@ import java.util.*;
 @WebServlet(urlPatterns = {"/admin-guideline-listen-list.html", "/admin-guideline-listen-edit.html"})
 public class ListenGuidelineController extends HttpServlet {
     private final Logger logger = Logger.getLogger(this.getClass());
+    ResourceBundle resourceBundle = ResourceBundle.getBundle("ApplicationResources");
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
-        if (session != null) {
-//            get session from post method and then set them to request
-            req.setAttribute(WebConstant.ALERT, session.getAttribute(WebConstant.ALERT));
-            req.setAttribute(WebConstant.MESSAGE_RESPONSE, session.getAttribute(WebConstant.MESSAGE_RESPONSE));
-
-//            remove used session
-            session.removeAttribute(WebConstant.ALERT);
-            session.removeAttribute(WebConstant.MESSAGE_RESPONSE);
-        }
-
         ListenGuidelineCommand command = FormUtil.populate(ListenGuidelineCommand.class, req);
 
-//        command.setMaxPageItems(4);
-        executeSearch(req, command);
-
-        req.setAttribute(WebConstant.LIST_ITEMS, command);
         if (command.getUrlType() != null && command.getUrlType().equals(WebConstant.URL_LIST)) {
+            executeSearch(req, command);
+
+//            set crudAction response message
+            if (command.getCrudAction() != null) {
+                Map<String, String> messageMap = buildMessageMap(resourceBundle);
+                WebCommonUtil.addRedirectMessage(req, command.getCrudAction(), messageMap);
+            }
+
+            req.setAttribute(WebConstant.LIST_ITEMS, command);
             req.getRequestDispatcher("/views/admin/listenguideline/list.jsp").forward(req, resp);
 
         } else if (command.getUrlType() != null && command.getUrlType().equals(WebConstant.URL_EDIT)) {
-//            command.getPojo().setContent("</textarea><script>alert('asfasdsa')</script><textarea>");
+            if (command.getPojo().getListenGuideLineId() != null) {
+                Integer listenGuidelineId = command.getPojo().getListenGuideLineId();
+                ListenGuidelineDTO listenGuidelineDTO = SingletonServiceUtil.getListenGuidelineServiceInstance().findById(listenGuidelineId);
+
+                if (listenGuidelineDTO != null) {
+                    command.setPojo(listenGuidelineDTO);
+                }
+            }
             req.setAttribute(WebConstant.FORM_ITEM, command);
             req.getRequestDispatcher("/views/admin/listenguideline/edit.jsp").forward(req, resp);
         }
+    }
+
+    private Map<String, String> buildMessageMap(ResourceBundle resourceBundle) {
+        Map<String, String> messageMap = new HashMap<>();
+        messageMap.put(WebConstant.REDIRECT_INSERT, resourceBundle.getString("label.add.success"));
+        messageMap.put(WebConstant.REDIRECT_UPDATE, resourceBundle.getString("label.update.success"));
+        messageMap.put(WebConstant.REDIRECT_DELETE, resourceBundle.getString("label.delete.success"));
+        messageMap.put(WebConstant.REDIRECT_ERROR, resourceBundle.getString("label.message.error"));
+        return messageMap;
     }
 
     private void executeSearch(HttpServletRequest req, ListenGuidelineCommand command) {
@@ -69,34 +81,48 @@ public class ListenGuidelineController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         ListenGuidelineCommand command = new ListenGuidelineCommand();
-        HttpSession session = req.getSession();
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("ApplicationResources");
         FileUploadUtil fileUploadUtil = new FileUploadUtil();
         Set<String> titleValueSet = buildTitleValueSet();
 
-        try {
-            Object[] returnedObjects = fileUploadUtil.writeOrUpdateFile(req, titleValueSet, WebConstant.LISTEN_GUIDELINE_IMAGE_URL);
-            Map<String, String> returnValueMap = (Map<String, String>) returnedObjects[3];
-            mappingReturnValueMapToCommand(returnValueMap, command);
+        Object[] objects = fileUploadUtil.writeOrUpdateFile(req, titleValueSet, WebConstant.LISTEN_GUIDELINE_IMAGE_URL);
 
-            session.setAttribute(WebConstant.ALERT, WebConstant.TYPE_SUCCESS);
-            session.setAttribute(WebConstant.MESSAGE_RESPONSE, resourceBundle.getString("label.guideline.listen.add.success"));
-        } catch (Exception ex) {
-            logger.error(ex.getMessage(), ex);
-            session.setAttribute(WebConstant.ALERT, WebConstant.TYPE_ERROR);
-            session.setAttribute(WebConstant.MESSAGE_RESPONSE, resourceBundle.getString("label.guideline.listen.add.fail"));
+        boolean isSuccess = (boolean) objects[0];
+        if (!isSuccess) {
+            resp.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&crudAction=redirect_error");
+        } else {
+            Map<String, String> returnedValueMap = (Map<String, String>) objects[3];
+            mappingReturnedValueMapToCommand(returnedValueMap, command);
+
+//            set image for dto
+            String imageName = objects[2].toString();
+            if (StringUtils.isNotBlank(imageName)) {
+                command.getPojo().setImage(imageName);
+            }
+
+            if (command.getPojo().getListenGuideLineId() != null) {
+//                update listenguideline
+            } else {
+//                insert listenguideline
+                SingletonServiceUtil.getListenGuidelineServiceInstance().saveListenGuideline(command.getPojo());
+                resp.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&crudAction=redirect_insert");
+            }
+
         }
-
-        resp.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list");
     }
 
-    private ListenGuidelineCommand mappingReturnValueMapToCommand(Map<String, String> returnValueMap, ListenGuidelineCommand command) {
+    private ListenGuidelineCommand mappingReturnedValueMapToCommand(Map<String, String> returnValueMap, ListenGuidelineCommand command) {
 //        mapping all returned value in map to command
+        if (returnValueMap.containsKey("pojo.listenGuideLineId")) {
+            command.getPojo().setListenGuideLineId(Integer.parseInt(returnValueMap.get("pojo.listenGuideLineId")));
+        }
+
         if (returnValueMap.containsKey("pojo.title")) {
             command.getPojo().setTitle(returnValueMap.get("pojo.title"));
-        } else if (returnValueMap.containsKey("pojo.content")) {
+        }
+
+        if (returnValueMap.containsKey("pojo.content")) {
             command.getPojo().setContent(returnValueMap.get("pojo.content"));
         }
         return command;
@@ -104,6 +130,7 @@ public class ListenGuidelineController extends HttpServlet {
 
     private Set<String> buildTitleValueSet() {
         Set<String> titleValueSet = new HashSet<>();
+        titleValueSet.add("pojo.listenGuideLineId");
         titleValueSet.add("pojo.title");
         titleValueSet.add("pojo.content");
         return titleValueSet;

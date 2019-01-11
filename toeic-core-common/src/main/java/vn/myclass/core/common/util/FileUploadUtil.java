@@ -26,8 +26,8 @@ public class FileUploadUtil {
 
 //        those are all return value in this method
         boolean isSuccess;
-        String fileLocation = null;
-        String fileName = null;
+        String fileLocation = "";
+        String fileName = "";
         Map<String, String> returnValueMap = new HashMap<>();
 
         // Check that we have a file upload request
