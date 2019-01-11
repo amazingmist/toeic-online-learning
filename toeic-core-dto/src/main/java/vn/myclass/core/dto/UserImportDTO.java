@@ -47,6 +47,10 @@ public class UserImportDTO implements Serializable {
         return isValid;
     }
 
+    public boolean getIsValid() {
+        return isValid;
+    }
+
     public void setValid(boolean valid) {
         isValid = valid;
     }

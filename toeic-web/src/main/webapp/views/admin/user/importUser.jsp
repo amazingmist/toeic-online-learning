@@ -81,16 +81,11 @@
                                                style="margin: 3em 0 1.5em;"
                                                sort="external"
                                                requestURI="">
-                                    <display:column property="name" titleKey="label.user.name" sortable="true"
-                                                    sortName="name"/>
-                                    <display:column property="password" titleKey="label.user.password" sortable="true"
-                                                    sortName="password"/>
-                                    <display:column property="fullName" titleKey="label.user.fullName" sortable="true"
-                                                    sortName="fullName"/>
-                                    <display:column property="roleName" titleKey="label.user.role" sortable="true"
-                                                    sortName="roleName"/>
-                                    <display:column property="error" titleKey="label.import.error.info"
-                                                    class="text-danger"/>
+                                    <display:column property="name" titleKey="label.user.name" class="${tableList.isValid ? '' : 'danger'}"/>
+                                    <display:column property="password" titleKey="label.user.password" class="${tableList.isValid ? '' : 'danger'}"/>
+                                    <display:column property="fullName" titleKey="label.user.fullName" class="${tableList.isValid ? '' : 'danger'}"/>
+                                    <display:column property="roleName" titleKey="label.user.role" class="${tableList.isValid ? '' : 'danger'}"/>
+                                    <display:column property="error" titleKey="label.import.error.info" class="${tableList.isValid ? '' : 'danger'}"/>
                                 </display:table>
                             </fmt:bundle>
                         </div>

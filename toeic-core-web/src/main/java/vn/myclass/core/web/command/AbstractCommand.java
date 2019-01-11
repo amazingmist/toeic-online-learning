@@ -14,7 +14,7 @@ public class AbstractCommand<T> {
     private String tableId = "tableList";
 
 //    So luong item hien thi moi page
-    private int maxPageItems = 20;
+    private int maxPageItems = 5;
 
     private int totalItems = 0;
     private int firstItem = 0;

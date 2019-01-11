@@ -60,8 +60,6 @@
         <div class="page-content">
             <div class="row">
                 <div class="col-xs-12">
-                </div>
-                <div class="col-xs-12">
                     <!-- PAGE CONTENT BEGINS -->
                     <c:if test="${not empty messageResponse}">
                         <div class="alert alert-dismissible fade in alert-${alert}">

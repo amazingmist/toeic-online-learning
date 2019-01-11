@@ -38,7 +38,7 @@ public class ListenGuidelineController extends HttpServlet {
 
         ListenGuidelineCommand command = FormUtil.populate(ListenGuidelineCommand.class, req);
 
-        command.setMaxPageItems(4);
+//        command.setMaxPageItems(4);
         executeSearch(req, command);
 
         req.setAttribute(WebConstant.LIST_ITEMS, command);
