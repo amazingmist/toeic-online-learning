@@ -44,7 +44,10 @@ public class ListenGuidelineController extends HttpServlet {
         req.setAttribute(WebConstant.LIST_ITEMS, command);
         if (command.getUrlType() != null && command.getUrlType().equals(WebConstant.URL_LIST)) {
             req.getRequestDispatcher("/views/admin/listenguideline/list.jsp").forward(req, resp);
+
         } else if (command.getUrlType() != null && command.getUrlType().equals(WebConstant.URL_EDIT)) {
+//            command.getPojo().setContent("</textarea><script>alert('asfasdsa')</script><textarea>");
+            req.setAttribute(WebConstant.FORM_ITEM, command);
             req.getRequestDispatcher("/views/admin/listenguideline/edit.jsp").forward(req, resp);
         }
     }
