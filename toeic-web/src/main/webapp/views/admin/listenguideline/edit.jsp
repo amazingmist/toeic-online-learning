@@ -110,7 +110,7 @@
     </div>
 </div>
 <content tag="local_script">
-    <script type="application/javascript" src="/ckeditor/ckeditor.js"></script>
+    <script type="application/javascript" src="/template/library/ckeditor/ckeditor.js"></script>
     <script type="application/javascript" src="/template/admin/assets/js/jquery.validate.min.js"></script>
 
     <script type="application/javascript">

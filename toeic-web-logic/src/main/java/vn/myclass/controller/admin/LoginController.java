@@ -29,7 +29,7 @@ public class LoginController extends HttpServlet {
         UserCommand command = FormUtil.populate(UserCommand.class, req);
         UserDTO pojo = command.getPojo();
         try {
-            UserDTO userDTO = SingletonServiceUtil.getUserServiceInstance().findRoleByUser(pojo);
+            UserDTO userDTO = SingletonServiceUtil.getUserServiceInstance().findByNameAndPassword(pojo.getName(), pojo.getPassword());
             if (userDTO.getRoleDTO().getName().equals(WebConstant.ROLE_ADMIN)) {
                 resp.sendRedirect("/admin-home.html");
             } else if (userDTO.getRoleDTO().getName().equals(WebConstant.ROLE_USER)) {

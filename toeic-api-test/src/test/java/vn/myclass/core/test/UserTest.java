@@ -20,6 +20,6 @@ public class UserTest {
         userDTO.setRoleDTO(roleDTO);
         userDTO.setPassword("33");
 
-        SingletonServiceUtil.getUserServiceInstance().saveUser(userDTO);
+        SingletonServiceUtil.getUserServiceInstance().save(userDTO);
     }
 }

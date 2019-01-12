@@ -148,12 +148,12 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         return new Object[]{count, list};
     }
 
-    public Integer delete(List<ID> ids) {
+    public Integer delete(List<ID> idList) {
         Session session = this.getSession();
         Transaction transaction = session.beginTransaction();
         int countSuccess = 0;
         try {
-            for (ID id : ids) {
+            for (ID id : idList) {
                 Object object = session.get(this.getPersistenceClass(), id);
                 session.delete(object);
                 countSuccess++;

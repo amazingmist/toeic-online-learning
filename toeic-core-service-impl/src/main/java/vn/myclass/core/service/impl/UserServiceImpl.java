@@ -16,8 +16,8 @@ import java.util.Map;
 
 public class UserServiceImpl implements UserService {
     @Override
-    public UserDTO findRoleByUser(UserDTO userDTO) {
-        UserEntity entity = SingletonDaoUtil.getUserDaoInstance().findByNameAndPassword(userDTO.getName(), userDTO.getPassword());
+    public UserDTO findByNameAndPassword(String name, String password) {
+        UserEntity entity = SingletonDaoUtil.getUserDaoInstance().findByNameAndPassword(name, password);
         return UserBeanUtil.entity2Dto(entity);
     }
 
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(UserDTO userDTO) {
+    public void save(UserDTO userDTO) {
         Timestamp createdDate = new Timestamp(System.currentTimeMillis());
         userDTO.setCreatedDate(createdDate);
         UserEntity entity = UserBeanUtil.dto2Entity(userDTO);
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO updateUser(UserDTO userDTO) {
+    public UserDTO update(UserDTO userDTO) {
         UserDTO oldUserDTO = this.findById(userDTO.getUserId());
 //        set new data to old dto
         oldUserDTO.setFullName(userDTO.getFullName());

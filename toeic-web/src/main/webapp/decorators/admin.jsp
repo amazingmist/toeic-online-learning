@@ -16,6 +16,8 @@
     <!-- ace styles -->
     <link rel="stylesheet" href="<c:url value='/template/admin/assets/css/ace.min.css'/>" class="ace-main-stylesheet"
           id="main-ace-style"/>
+    <%-- sweet alert --%>
+    <link rel="stylesheet" href="<c:url value='/template/library/sweetalert/sweetalert2.min.css'/>"/>
     <%-- my custome css --%>
     <link rel="stylesheet" href="<c:url value="/template/admin/css/global_admin_style.css"/>">
     <dec:head></dec:head>
@@ -52,9 +54,14 @@
 <script src="<c:url value='/template/admin/assets/js/jquery.flot.min.js'/>"></script>
 <script src="<c:url value='/template/admin/assets/js/jquery.flot.pie.min.js'/>"></script>
 <script src="<c:url value='/template/admin/assets/js/jquery.flot.resize.min.js'/>"></script>
+
 <!-- ace scripts -->
 <script src="<c:url value='/template/admin/assets/js/ace-elements.min.js'/>"></script>
 <script src="<c:url value='/template/admin/assets/js/ace.min.js'/>"></script>
+
+<%-- sweet alert 2 --%>
+<script src="<c:url value='/template/library/sweetalert/sweetalert2.min.js'/>"></script>
+
 <%-- my custom js --%>
 <script src="<c:url value="/template/admin/js/global_admin_script.js"/>"></script>
 <dec:getProperty property="page.local_script"></dec:getProperty>

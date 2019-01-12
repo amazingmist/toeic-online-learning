@@ -104,12 +104,12 @@ public class UserController extends HttpServlet {
 
                     if (pojo.getUserId() != null) {
 //                    update user
-                        pojo = SingletonServiceUtil.getUserServiceInstance().updateUser(pojo);
+                        pojo = SingletonServiceUtil.getUserServiceInstance().update(pojo);
                         req.setAttribute(WebConstant.MESSAGE_RESPONSE, WebConstant.REDIRECT_UPDATE);
 
                     } else {
 //                    insert user
-                        SingletonServiceUtil.getUserServiceInstance().saveUser(pojo);
+                        SingletonServiceUtil.getUserServiceInstance().save(pojo);
                         req.setAttribute(WebConstant.MESSAGE_RESPONSE, WebConstant.REDIRECT_INSERT);
                     }
                 }

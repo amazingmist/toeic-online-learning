@@ -17,7 +17,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
 
@@ -29,13 +28,26 @@ public class ListenGuidelineController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ListenGuidelineCommand command = FormUtil.populate(ListenGuidelineCommand.class, req);
+        Map<String, String> messageMap = buildMessageMap(resourceBundle);
 
         if (command.getUrlType() != null && command.getUrlType().equals(WebConstant.URL_LIST)) {
+            if (command.getCrudAction() != null && command.getCrudAction().equals(WebConstant.REDIRECT_DELETE)){
+                List<Integer> idList = new ArrayList<>();
+                try {
+                    for (String id : command.getCheckList()) {
+                        idList.add(Integer.parseInt(id));
+                    }
+                    SingletonServiceUtil.getListenGuidelineServiceInstance().delete(idList);
+                }catch (Exception ex){
+                    logger.error(ex.getMessage(), ex);
+                    command.setCrudAction(WebConstant.REDIRECT_ERROR);
+                }
+            }
+
             executeSearch(req, command);
 
 //            set crudAction response message
             if (command.getCrudAction() != null) {
-                Map<String, String> messageMap = buildMessageMap(resourceBundle);
                 WebCommonUtil.addRedirectMessage(req, command.getCrudAction(), messageMap);
             }
 
@@ -68,7 +80,7 @@ public class ListenGuidelineController extends HttpServlet {
     private void executeSearch(HttpServletRequest req, ListenGuidelineCommand command) {
         RequestUtil.initSearchBean(req, command);
         Map<String, Object> propertiesMap = buildPropertiesMap(command);
-        Object[] objects = SingletonServiceUtil.getListenGuidelineServiceInstance().findListenGuidelineByProperty(propertiesMap, command.getSortExpression(), command.getSortDirection(), command.getFirstItem(), command.getMaxPageItems());
+        Object[] objects = SingletonServiceUtil.getListenGuidelineServiceInstance().findByProperties(propertiesMap, command.getSortExpression(), command.getSortDirection(), command.getFirstItem(), command.getMaxPageItems());
         command.setListResult((List<ListenGuidelineDTO>) objects[1]);
         command.setTotalItems(Integer.parseInt(objects[0].toString()));
     }
@@ -112,7 +124,7 @@ public class ListenGuidelineController extends HttpServlet {
 
                 command.getPojo().setCreatedDate(listenGuidelineDTO.getCreatedDate());
 
-                ListenGuidelineDTO result = SingletonServiceUtil.getListenGuidelineServiceInstance().updateListenGuideline(command.getPojo());
+                ListenGuidelineDTO result = SingletonServiceUtil.getListenGuidelineServiceInstance().update(command.getPojo());
 
                 if (result != null){
                     resp.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&crudAction=redirect_update");
@@ -123,7 +135,7 @@ public class ListenGuidelineController extends HttpServlet {
             } else {
 //                insert listenguideline
                 try {
-                    SingletonServiceUtil.getListenGuidelineServiceInstance().saveListenGuideline(command.getPojo());
+                    SingletonServiceUtil.getListenGuidelineServiceInstance().save(command.getPojo());
                     resp.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&crudAction=redirect_insert");
                 }catch (ConstraintViolationException ex){
                     logger.error(ex.getMessage(), ex);

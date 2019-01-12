@@ -1,3 +1,7 @@
 .error {
     color: #eb3506 !important;
 }
+
+button{
+    outline: none !important;
+}

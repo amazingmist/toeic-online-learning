@@ -23,10 +23,30 @@ function enableOrDisableDeleteAll() {
 
 function autoCheckCheckboxAll() {
     $('tbody input[type=checkbox]').change(function () {
-        if ($('tbody input[type=checkbox]').length == $('tbody input[type=checkbox]:checked').length){
+        if ($('tbody input[type=checkbox]').length == $('tbody input[type=checkbox]:checked').length) {
             $('#chkCheckAll').prop("checked", true);
-        }else{
+        } else {
             $('#chkCheckAll').prop("checked", false);
         }
     });
+}
+
+function showSweetAlertBeforeDelete(confirmCallback, cancelCallback) {
+    swal({
+        title: "Xác nhận xoá",
+        text: "Bạn có chắc chắn muốn xoá dữ liệu đã chọn?",
+        type: "warning",
+        showCancelButton: true,
+        cancelButtonText: "Huỷ bỏ",
+        confirmButtonClass: "btn-danger",
+        confirmButtonText: "Xác nhận",
+        closeOnConfirm: false
+    }).then(function (isConfirm) {
+        if (isConfirm){
+            confirmCallback();
+        }else{
+            cancelCallback();
+        }
+    });
+
 }

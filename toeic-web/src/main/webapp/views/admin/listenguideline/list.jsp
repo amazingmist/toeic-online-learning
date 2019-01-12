@@ -50,8 +50,9 @@
             <div class="nav-search" id="nav-search">
                 <form class="form-search" action="${listenGuidelineSearchUrl}" method="get">
                     <input type="hidden" name="urlType" value="url_list">
-                     <span class="input-icon">
-                     <input type="text" name="pojo.title" value="${items.pojo.title}" placeholder="Search ..." class="nav-search-input" id="nav-search-input"
+                    <span class="input-icon">
+                     <input type="text" name="pojo.title" value="${items.pojo.title}" placeholder="Search ..."
+                            class="nav-search-input" id="nav-search-input"
                             autocomplete="off">
                      <i class="ace-icon fa fa-search nav-search-icon"></i>
                      </span>
@@ -92,7 +93,8 @@
                                                 bundle="${lang}"/>
                                         </a>
                                         <button class="ColVis_Button ColVis_MasterButton btn btn-danger btn-sm btn-bold"
-                                                id="btnDeleteAll" style="display: flex; align-items: center" disabled>
+                                                id="btnDeleteAll" style="display: flex; align-items: center" disabled
+                                                onclick="btnClickEvent(this)">
                                             <span><i class="ace-icon fa fa-trash-o bigger-140"
                                                      style="padding-right: 5px"></i></span><fmt:message
                                                 key="label.delete" bundle="${lang}"/></button>
@@ -102,42 +104,54 @@
                         </div>
                     </div>
                     <div class="table-responsive">
-                        <fmt:bundle basename="ApplicationResources">
-                            <display:table id="tableList" name="items.listResult" partialList="true"
-                                           size="${items.totalItems}" pagesize="${items.maxPageItems}"
-                                           class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
-                                           style="margin: 3em 0 1.5em;"
-                                           sort="external"
-                                           requestURI="">
-                                <display:column
-                                        title="<input type='checkbox' class='ace check-box-element' id='chkCheckAll'><span class='lbl'></span>"
-                                        class="center select-cell" headerClass="center select-cell">
-                                    <input type="checkbox" class="ace check-box-element" name="checkList"
-                                           id="checkbox_${tableList.listenGuideLineId}">
-                                    <span class="lbl"></span>
-                                </display:column>
-                                <display:column property="title" titleKey="label.guideline.title" sortable="true"
-                                                sortName="title"/>
-                                <display:column property="content" titleKey="label.guideline.content" sortable="true"
-                                                sortName="content"/>
-                                <display:column titleKey="label.action">
-                                    <c:url var="listenGuidelineRowEditUrl" value="/admin-guideline-listen-edit.html">
-                                        <c:param name="urlType" value="url_edit"></c:param>
-                                        <c:param name="pojo.listenGuideLineId" value="${tableList.listenGuideLineId}"></c:param>
-                                    </c:url>
-                                    <div class="hidden-sm hidden-xs btn-group">
-                                        <a href="${listenGuidelineRowEditUrl}" class="btn btn-xs btn-info" data-toggle="tooltip"
-                                                title="<fmt:message key="label.edit" bundle="${lang}"/>">
-                                            <i class="ace-icon fa fa-pencil bigger-120"></i>
-                                        </a>
-                                        <button class="btn btn-xs btn-danger" data-toggle="tooltip"
-                                                title="<fmt:message key="label.delete" bundle="${lang}"/>">
-                                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                        </button>
-                                    </div>
-                                </display:column>
-                            </display:table>
-                        </fmt:bundle>
+                        <form id="formDelete" action="${listenGuidelineSearchUrl}" method="get">
+                            <fmt:bundle basename="ApplicationResources">
+                                <display:table id="tableList" name="items.listResult" partialList="true"
+                                               size="${items.totalItems}" pagesize="${items.maxPageItems}"
+                                               class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
+                                               style="margin: 3em 0 1.5em;"
+                                               sort="external"
+                                               requestURI="">
+                                    <display:column
+                                            title="<input type='checkbox' class='ace check-box-element' id='chkCheckAll'><span class='lbl'></span>"
+                                            class="center select-cell" headerClass="center select-cell">
+                                        <input type="checkbox" class="ace check-box-element" name="checkList"
+                                               id="checkbox_${tableList.listenGuideLineId}"
+                                               value="${tableList.listenGuideLineId}">
+                                        <span class="lbl"></span>
+                                    </display:column>
+                                    <display:column property="title" titleKey="label.guideline.title" sortable="true"
+                                                    sortName="title"/>
+                                    <display:column property="content" titleKey="label.guideline.content"
+                                                    sortable="true"
+                                                    sortName="content"/>
+                                    <display:column titleKey="label.action">
+                                        <c:url var="listenGuidelineRowEditUrl"
+                                               value="/admin-guideline-listen-edit.html">
+                                            <c:param name="urlType" value="url_edit"></c:param>
+                                            <c:param name="pojo.listenGuideLineId"
+                                                     value="${tableList.listenGuideLineId}"></c:param>
+                                        </c:url>
+                                        <div class="hidden-sm hidden-xs btn-group">
+                                            <a href="${listenGuidelineRowEditUrl}" class="btn btn-xs btn-info"
+                                               data-toggle="tooltip"
+                                               title="<fmt:message key="label.edit" bundle="${lang}"/>">
+                                                <i class="ace-icon fa fa-pencil bigger-120"></i>
+                                            </a>
+                                            <button class="btn btn-xs btn-danger" type="button"
+                                                    onclick="btnClickEvent(this)"
+                                                    data-id="${tableList.listenGuideLineId}"
+                                                    data-toggle="tooltip"
+                                                    title="<fmt:message key="label.delete" bundle="${lang}"/>">
+                                                <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                            </button>
+                                        </div>
+                                    </display:column>
+                                </display:table>
+                            </fmt:bundle>
+                            <input type="hidden" name="urlType" value="url_list">
+                            <input type="hidden" name="crudAction" value="redirect_delete">
+                        </form>
                     </div>
                     <!-- PAGE CONTENT ENDS -->
                 </div>
@@ -148,5 +162,22 @@
         <!-- /.page-content -->
     </div>
 </div>
+<content tag="local_script">
+    <script type="application/javascript">
+        function btnClickEvent(button) {
+            if ($(button).data("id") != null) {
+                $('#checkbox_' + $(button).data("id")).attr("checked", true);
+            }
+            showSweetAlertBeforeDelete(
+                function () {
+                    $('#formDelete').submit();
+                },
+                function () {
+                    $('#checkbox_' + $(button).data("id")).attr("checked", false);
+                }
+            );
+        }
+    </script>
+</content>
 </body>
 </html>

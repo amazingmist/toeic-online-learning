@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class ListenGuidelineServiceImpl implements ListenGuidelineService {
     @Override
-    public Object[] findListenGuidelineByProperty(Map<String, Object> properties, String sortExpression, String sortDirection, Integer offset, Integer limit) {
+    public Object[] findByProperties(Map<String, Object> properties, String sortExpression, String sortDirection, Integer offset, Integer limit) {
         Object[] objects = SingletonDaoUtil.getListenGuidelineDaoInstance().findByProperties(properties, sortExpression, sortDirection, offset, limit);
         List<ListenGuidelineDTO> dtoList = new ArrayList<>();
 
@@ -33,7 +33,7 @@ public class ListenGuidelineServiceImpl implements ListenGuidelineService {
     }
 
     @Override
-    public void saveListenGuideline(ListenGuidelineDTO listenGuidelineDTO) throws ConstraintViolationException {
+    public void save(ListenGuidelineDTO listenGuidelineDTO) throws ConstraintViolationException {
         Timestamp createdDate = new Timestamp(System.currentTimeMillis());
         listenGuidelineDTO.setCreatedDate(createdDate);
         ListenGuidelineEntity entity = ListenGuidelineBeanUtil.dto2Entity(listenGuidelineDTO);
@@ -41,12 +41,18 @@ public class ListenGuidelineServiceImpl implements ListenGuidelineService {
     }
 
     @Override
-    public ListenGuidelineDTO updateListenGuideline(ListenGuidelineDTO listenGuidelineDTO) throws ConstraintViolationException {
+    public ListenGuidelineDTO update(ListenGuidelineDTO listenGuidelineDTO) throws ConstraintViolationException {
         Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
         listenGuidelineDTO.setModifiedDate(modifiedDate);
 
         ListenGuidelineEntity entity = ListenGuidelineBeanUtil.dto2Entity(listenGuidelineDTO);
         entity = SingletonDaoUtil.getListenGuidelineDaoInstance().update(entity);
         return ListenGuidelineBeanUtil.entity2Dto(entity);
+    }
+
+    @Override
+    public Integer delete(List<Integer> idList) {
+        Integer count = SingletonDaoUtil.getListenGuidelineDaoInstance().delete(idList);
+        return count;
     }
 }
