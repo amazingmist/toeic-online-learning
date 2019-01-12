@@ -1,5 +1,6 @@
 package vn.myclass.core.data.daoimpl;
 
+import org.apache.log4j.Logger;
 import org.hibernate.*;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T> {
+    private final Logger logger = Logger.getLogger(this.getClass());
     private Class<T> persistenceClass;
 
     public AbstractDao() {
@@ -55,6 +57,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             transaction.commit();
         } catch (HibernateException ex) {
             transaction.rollback();
+            logger.error(ex.getMessage(), ex);
             throw ex;
         } finally {
             session.close();
@@ -62,7 +65,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         return result;
     }
 
-    public T save(T entity) {
+    public T save(T entity) throws HibernateException{
         Session session = this.getSession();
         Transaction transaction = session.beginTransaction();
         try {
@@ -70,6 +73,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             transaction.commit();
         } catch (HibernateException ex) {
             transaction.rollback();
+            logger.error(ex.getMessage(), ex);
             throw ex;
         } finally {
             session.close();
@@ -78,15 +82,15 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
     }
 
     public T findById(ID id){
-        T result;
+        T result = null;
         Session session = this.getSession();
         try {
             // note: the first parameter is class type, so we pass persistenceClass at this situation
             result = (T) session.get(this.getPersistenceClass(), id);
-            if (result == null) {
-                throw new ObjectNotFoundException("NOT FOUND " + id, this.getPersistenceClassName());
-            }
-        } finally {
+        } catch (HibernateException ex) {
+            logger.error(ex.getMessage(), ex);
+            throw ex;
+        }finally{
             session.close();
         }
         return result;
@@ -157,6 +161,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             transaction.commit();
         } catch (HibernateException ex) {
             transaction.rollback();
+            logger.error(ex.getMessage(), ex);
             throw ex;
         } finally {
             session.close();
@@ -173,7 +178,10 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             Criteria cr = session.createCriteria(this.getPersistenceClass());
             cr.add(Restrictions.eq(property, value));
             result = (T) cr.uniqueResult();
-        } finally {
+        } catch (HibernateException ex) {
+            logger.error(ex.getMessage(), ex);
+            throw ex;
+        }finally{
             session.close();
         }
         return result;
