@@ -218,9 +218,9 @@ public class UserController extends HttpServlet {
 
     private Map<String, String> buildMessageMap(ResourceBundle resourceBundle) {
         Map<String, String> messageMap = new HashMap<>();
-        messageMap.put(WebConstant.REDIRECT_INSERT, resourceBundle.getString("label.user.add.success"));
-        messageMap.put(WebConstant.REDIRECT_UPDATE, resourceBundle.getString("label.user.update.success"));
-        messageMap.put(WebConstant.REDIRECT_DELETE, resourceBundle.getString("label.user.delete.success"));
+        messageMap.put(WebConstant.REDIRECT_INSERT, resourceBundle.getString("label.add.success"));
+        messageMap.put(WebConstant.REDIRECT_UPDATE, resourceBundle.getString("label.update.success"));
+        messageMap.put(WebConstant.REDIRECT_DELETE, resourceBundle.getString("label.delete.success"));
         messageMap.put(WebConstant.REDIRECT_ERROR, resourceBundle.getString("label.message.error"));
         return messageMap;
     }

@@ -72,13 +72,6 @@
                     </c:if>
                     <div class="row">
                         <div class="col-xs-12">
-                            <!-- PAGE CONTENT BEGINS -->
-                            <c:if test="${not empty messageResponse}">
-                                <div class="alert alert-dismissible fade in alert-${alert}">
-                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                    <strong>${messageResponse}</strong>
-                                </div>
-                            </c:if>
                             <div class="pull-right">
                                 <div class="btn-group btn-overlap">
                                     <div class="ColVis btn-group" title="" data-original-title="Show/hide columns">

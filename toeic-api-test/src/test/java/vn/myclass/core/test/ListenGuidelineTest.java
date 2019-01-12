@@ -4,6 +4,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import vn.myclass.core.dao.ListenGuidelineDao;
 import vn.myclass.core.daoimpl.ListenGuidelineDaoImpl;
+import vn.myclass.core.service.util.SingletonDaoUtil;
 
 import java.io.File;
 import java.util.HashMap;
@@ -22,5 +23,10 @@ public class ListenGuidelineTest {
         properties.put("title", "Bai huong dan 1");
         properties.put("content", "Noi dung bai huong dan 1");
         Object[] list = listenGuidelineDao.findByProperties(properties, null, null, null, null);
+    }
+
+//    @Test
+    public void testFindByID(){
+        SingletonDaoUtil.getListenGuidelineDaoInstance().findById(100);
     }
 }

@@ -2,6 +2,7 @@ package vn.myclass.controller.admin;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.exception.ConstraintViolationException;
 import vn.myclass.command.ListenGuidelineCommand;
 import vn.myclass.core.common.util.FileUploadUtil;
 import vn.myclass.core.dto.ListenGuidelineDTO;
@@ -81,7 +82,7 @@ public class ListenGuidelineController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         ListenGuidelineCommand command = new ListenGuidelineCommand();
         FileUploadUtil fileUploadUtil = new FileUploadUtil();
         Set<String> titleValueSet = buildTitleValueSet();
@@ -103,10 +104,31 @@ public class ListenGuidelineController extends HttpServlet {
 
             if (command.getPojo().getListenGuideLineId() != null) {
 //                update listenguideline
+                ListenGuidelineDTO listenGuidelineDTO = SingletonServiceUtil.getListenGuidelineServiceInstance().findById(command.getPojo().getListenGuideLineId());
+
+                if (command.getPojo().getImage() == null){
+                    command.getPojo().setImage(listenGuidelineDTO.getImage());
+                }
+
+                command.getPojo().setCreatedDate(listenGuidelineDTO.getCreatedDate());
+
+                ListenGuidelineDTO result = SingletonServiceUtil.getListenGuidelineServiceInstance().updateListenGuideline(command.getPojo());
+
+                if (result != null){
+                    resp.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&crudAction=redirect_update");
+                }else{
+                    resp.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&crudAction=redirect_error");
+                }
+
             } else {
 //                insert listenguideline
-                SingletonServiceUtil.getListenGuidelineServiceInstance().saveListenGuideline(command.getPojo());
-                resp.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&crudAction=redirect_insert");
+                try {
+                    SingletonServiceUtil.getListenGuidelineServiceInstance().saveListenGuideline(command.getPojo());
+                    resp.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&crudAction=redirect_insert");
+                }catch (ConstraintViolationException ex){
+                    logger.error(ex.getMessage(), ex);
+                    resp.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&crudAction=redirect_error");
+                }
             }
 
         }

@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,21 +42,21 @@ public class FileUploadUtil {
         factory.setRepository(new File(System.getProperty("java.io.tmpdir")));
 
         // Create a new file upload handler
-        ServletFileUpload upload = new ServletFileUpload(factory);
+        ServletFileUpload servletFileUpload = new ServletFileUpload(factory);
 
         // Set overall request size constraint
-        upload.setSizeMax(MAX_REQUEST_SIZE);
+        servletFileUpload.setSizeMax(MAX_REQUEST_SIZE);
 
         // Parse the request
         List<FileItem> items = null;
         try {
-            items = upload.parseRequest(request);
+            items = servletFileUpload.parseRequest(request);
         } catch (FileUploadException e) {
             logger.error(e.getMessage(), e);
             isSuccess = false;
         }
 
-        if (items != null) {
+        if (items != null && items.size() > 0) {
             for (FileItem item : items) {
 //            check if this field is a file upload and it have a submitted file
                 if (!item.isFormField() && StringUtils.isNotBlank(item.getName())) {
@@ -78,6 +79,12 @@ public class FileUploadUtil {
                     if (titleValueSet != null) {
                         String fieldName = item.getFieldName();
                         String fieldValue = item.getString();
+                        try {
+                            fieldValue = item.getString("UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            isSuccess = false;
+                            e.printStackTrace();
+                        }
 
 //                    check if this field is required return
                         if (titleValueSet.contains(fieldName)) {
@@ -86,6 +93,8 @@ public class FileUploadUtil {
                     }
                 }
             }
+        }else{
+            isSuccess = false;
         }
 
         return new Object[]{isSuccess, fileLocation, fileName, returnValueMap};

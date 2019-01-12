@@ -17,7 +17,8 @@
             border: 2px dashed #909090;
             cursor: pointer;
         }
-        #imagePreview{
+
+        #imagePreview {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -65,7 +66,7 @@
                 <div class="col-xs-12">
                     <!-- PAGE CONTENT BEGINS -->
                     <form action="${formUrl}" enctype="multipart/form-data" method="post" id="editingForm">
-                        <c:if test="${not empty listenGuideLineId}">
+                        <c:if test="${not empty item.pojo.listenGuideLineId}">
                             <input type="hidden" name="pojo.listenGuideLineId" value="${item.pojo.listenGuideLineId}">
                         </c:if>
                         <div class="row">
@@ -84,7 +85,8 @@
                             <input type="file" id="guidelineImage" name="file">
                             <div class="imagePreviewWrapper">
                                 <c:if test="${not empty item.pojo.image}">
-                                    <c:url value="/file_upload/listenguideline/${item.pojo.image}" var="imageUrl"></c:url>
+                                    <c:url value="/file_upload/listenguideline/${item.pojo.image}"
+                                           var="imageUrl"></c:url>
                                 </c:if>
                                 <img src="${imageUrl}" alt="" id="imagePreview">
                             </div>
@@ -117,7 +119,7 @@
             validateFormInput();
             getImagePreview();
         })
-        
+
         function getImagePreview() {
             $(".imagePreviewWrapper").click(function () {
                 $("#guidelineImage").trigger('click');
@@ -158,12 +160,15 @@
                 }
             });
 
+            <c:if test="${empty item.pojo.listenGuideLineId}">
             $("#guidelineImage").rules("add", {
                 required: true,
                 messages: {
                     required: '<fmt:message key="label.input.empty" bundle="${lang}"/>',
                 }
             });
+            </c:if>
+
 
             $("#guidelineContent").rules("add", {
                 required: function () {

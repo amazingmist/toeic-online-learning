@@ -1,7 +1,6 @@
 package vn.myclass.core.service.impl;
 
-import vn.myclass.core.dao.ListenGuidelineDao;
-import vn.myclass.core.daoimpl.ListenGuidelineDaoImpl;
+import org.hibernate.exception.ConstraintViolationException;
 import vn.myclass.core.dto.ListenGuidelineDTO;
 import vn.myclass.core.persistence.entity.ListenGuidelineEntity;
 import vn.myclass.core.service.ListenGuidelineService;
@@ -34,10 +33,20 @@ public class ListenGuidelineServiceImpl implements ListenGuidelineService {
     }
 
     @Override
-    public void saveListenGuideline(ListenGuidelineDTO listenGuidelineDTO) {
+    public void saveListenGuideline(ListenGuidelineDTO listenGuidelineDTO) throws ConstraintViolationException {
         Timestamp createdDate = new Timestamp(System.currentTimeMillis());
         listenGuidelineDTO.setCreatedDate(createdDate);
         ListenGuidelineEntity entity = ListenGuidelineBeanUtil.dto2Entity(listenGuidelineDTO);
         SingletonDaoUtil.getListenGuidelineDaoInstance().save(entity);
+    }
+
+    @Override
+    public ListenGuidelineDTO updateListenGuideline(ListenGuidelineDTO listenGuidelineDTO) throws ConstraintViolationException {
+        Timestamp modifiedDate = new Timestamp(System.currentTimeMillis());
+        listenGuidelineDTO.setModifiedDate(modifiedDate);
+
+        ListenGuidelineEntity entity = ListenGuidelineBeanUtil.dto2Entity(listenGuidelineDTO);
+        entity = SingletonDaoUtil.getListenGuidelineDaoInstance().update(entity);
+        return ListenGuidelineBeanUtil.entity2Dto(entity);
     }
 }
