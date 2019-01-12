@@ -14,8 +14,8 @@ import java.util.Map;
 
 public class ListenGuidelineServiceImpl implements ListenGuidelineService {
     @Override
-    public Object[] findByProperties(Map<String, Object> properties, String sortExpression, String sortDirection, Integer offset, Integer limit) {
-        Object[] objects = SingletonDaoUtil.getListenGuidelineDaoInstance().findByProperties(properties, sortExpression, sortDirection, offset, limit);
+    public Object[] findApproximateByProperties(Map<String, String> properties, String sortExpression, String sortDirection, Integer offset, Integer limit) {
+        Object[] objects = SingletonDaoUtil.getListenGuidelineDaoInstance().findApproximateByProperties(properties, sortExpression, sortDirection, offset, limit);
         List<ListenGuidelineDTO> dtoList = new ArrayList<>();
 
 //        convert entity list to dto

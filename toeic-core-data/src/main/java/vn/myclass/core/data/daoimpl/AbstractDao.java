@@ -2,6 +2,7 @@ package vn.myclass.core.data.daoimpl;
 
 import org.apache.log4j.Logger;
 import org.hibernate.*;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -136,6 +137,59 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             if (properties != null) {
                 for (Map.Entry<String, Object> entry : properties.entrySet()) {
                     cr2.add(Restrictions.eq(entry.getKey(), entry.getValue()));
+                }
+            }
+
+//            set result is a num row of list
+            cr2.setProjection(Projections.rowCount());
+            count = (Long) cr2.uniqueResult();
+        } finally {
+            session.close();
+        }
+        return new Object[]{count, list};
+    }
+
+    @Override
+    public Object[] findApproximateByProperties(Map<String, String> properties, String sortExpression, String sortDirection, Integer offset, Integer limit) {
+        List list;
+        Long count;
+        Session session = this.getSession();
+        try {
+            Criteria cr = session.createCriteria(this.getPersistenceClass());
+
+//            set condition for query
+            if (properties != null) {
+                for (Map.Entry<String, String> entry : properties.entrySet()) {
+                    cr.add(Restrictions.like(entry.getKey(), entry.getValue(), MatchMode.ANYWHERE));
+                }
+            }
+
+//            set sort direction
+            if (sortExpression != null && sortDirection != null) {
+                Order order = sortDirection.equals(CoreConstant.SORT_ASC) ?
+                        Order.asc(sortExpression) : Order.desc(sortExpression);
+                cr.addOrder(order);
+            }
+
+//            set start position offset
+            if (offset != null && offset >= 0) {
+                cr.setFirstResult(offset);
+            }
+
+//            set limit row
+            if (limit != null && limit > 0) {
+                cr.setMaxResults(limit);
+            }
+
+            list = cr.list();
+
+//            count total of items
+            Criteria cr2 = session.createCriteria(this.getPersistenceClass());
+
+//            set condition for query
+            if (properties != null) {
+                for (Map.Entry<String, String> entry : properties.entrySet()) {
+                    cr2.add(Restrictions.like(entry.getKey(), entry.getValue(), MatchMode.ANYWHERE));
                 }
             }
 
