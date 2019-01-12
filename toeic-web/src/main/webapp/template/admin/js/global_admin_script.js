@@ -35,16 +35,13 @@ function showSweetAlertBeforeDelete(confirmCallback, cancelCallback) {
     swal({
         title: "Xác nhận xoá",
         text: "Bạn có chắc chắn muốn xoá dữ liệu đã chọn?",
-        type: "warning",
-        showCancelButton: true,
-        cancelButtonText: "Huỷ bỏ",
-        confirmButtonClass: "btn-danger",
-        confirmButtonText: "Xác nhận",
-        closeOnConfirm: false
+        icon: "warning",
+        buttons: ["Huỷ bỏ", "Xác nhận"],
+        dangerMode: true,
     }).then(function (isConfirm) {
-        if (isConfirm){
+        if (isConfirm) {
             confirmCallback();
-        }else{
+        } else {
             cancelCallback();
         }
     });

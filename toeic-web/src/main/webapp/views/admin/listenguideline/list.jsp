@@ -166,16 +166,18 @@
     <script type="application/javascript">
         function btnClickEvent(button) {
             if ($(button).data("id") != null) {
-                $('#checkbox_' + $(button).data("id")).attr("checked", true);
+                $('#checkbox_' + $(button).data("id")).prop('checked', true);
             }
-            showSweetAlertBeforeDelete(
-                function () {
-                    $('#formDelete').submit();
-                },
-                function () {
-                    $('#checkbox_' + $(button).data("id")).attr("checked", false);
-                }
-            );
+
+            var confirmCallback = function () {
+                $('#formDelete').submit();
+            };
+
+            var cancelCallback = function () {
+                $('#checkbox_' + $(button).data("id")).prop('checked', false);
+            };
+
+            showSweetAlertBeforeDelete(confirmCallback, cancelCallback);
         }
     </script>
 </content>

@@ -37,7 +37,7 @@ public class ListenGuidelineController extends HttpServlet {
                     for (String id : command.getCheckList()) {
                         idList.add(Integer.parseInt(id));
                     }
-                    SingletonServiceUtil.getListenGuidelineServiceInstance().delete(idList);
+//                    SingletonServiceUtil.getListenGuidelineServiceInstance().delete(idList);
                 }catch (Exception ex){
                     logger.error(ex.getMessage(), ex);
                     command.setCrudAction(WebConstant.REDIRECT_ERROR);
