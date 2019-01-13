@@ -22,7 +22,7 @@ public class ListenGuidelineTest {
         Map<String, Object> properties = new HashMap<String, Object>();
         properties.put("title", "Bai huong dan 1");
         properties.put("content", "Noi dung bai huong dan 1");
-        Object[] list = listenGuidelineDao.findByProperties(properties, null, null, null, null);
+        Object[] list = listenGuidelineDao.findExactlyByProperties(properties, null, null, null, null);
     }
 
 //    @Test

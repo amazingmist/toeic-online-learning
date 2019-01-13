@@ -29,7 +29,7 @@ import java.util.*;
 @WebServlet(urlPatterns = {"/admin-user-list.html", "/ajax-admin-user-edit.html", "/admin-user-import.html",
         "/admin-user-import-validate.html"})
 public class UserController extends HttpServlet {
-    ResourceBundle resourceBundle = ResourceBundle.getBundle("ApplicationResources");
+    ResourceBundle resourceBundle = ResourceBundle.getBundle("ResourceBundle");
     private final Logger logger = Logger.getLogger(this.getClass());
     private final String SESSION_USER_IMPORT_LIST = "user_import_list";
     @Override

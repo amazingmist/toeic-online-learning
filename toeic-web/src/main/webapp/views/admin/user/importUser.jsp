@@ -74,7 +74,7 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="table-responsive">
-                            <fmt:bundle basename="ApplicationResources">
+                            <fmt:bundle basename="ResourceBundle">
                                 <display:table id="tableList" name="items.userImportDTOS" partialList="true"
                                                size="${items.totalItems}" pagesize="${items.maxPageItems}"
                                                class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"

@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Object[] findByProperties(Map<String, Object> properties, String sortExpression, String sortDirection, Integer offset, Integer limit) {
-        Object[] finded = SingletonDaoUtil.getUserDaoInstance().findByProperties(properties, sortExpression, sortDirection, offset, limit);
+        Object[] finded = SingletonDaoUtil.getUserDaoInstance().findExactlyByProperties(properties, sortExpression, sortDirection, offset, limit);
         List<UserDTO> dtoList = new ArrayList<>();
 
 //        convert entity list to dto

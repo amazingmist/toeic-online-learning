@@ -37,6 +37,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         return HibernateUtil.getSessionFactory().openSession();
     }
 
+    @Override
     public List<T> findAll() {
         List list;
         Session session = this.getSession();
@@ -49,6 +50,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         return list;
     }
 
+    @Override
     public T update(T entity) {
         T result;
         Session session = this.getSession();
@@ -66,6 +68,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         return result;
     }
 
+    @Override
     public T save(T entity) throws HibernateException{
         Session session = this.getSession();
         Transaction transaction = session.beginTransaction();
@@ -82,6 +85,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         return entity;
     }
 
+    @Override
     public T findById(ID id){
         T result = null;
         Session session = this.getSession();
@@ -97,17 +101,24 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         return result;
     }
 
-    public Object[] findByProperties(Map<String, Object> properties, String sortExpression, String sortDirection, Integer offset, Integer limit) {
+    private Object[] findByProperties(Map<String, Object> properties, String sortExpression, String sortDirection, Integer offset, Integer limit, boolean isFindApproximate) {
         List list;
         Long count;
         Session session = this.getSession();
         try {
             Criteria cr = session.createCriteria(this.getPersistenceClass());
+            Criteria cr2 = session.createCriteria(this.getPersistenceClass());
 
 //            set condition for query
             if (properties != null) {
                 for (Map.Entry<String, Object> entry : properties.entrySet()) {
-                    cr.add(Restrictions.eq(entry.getKey(), entry.getValue()));
+                    if (isFindApproximate){
+                        cr.add(Restrictions.like(entry.getKey(), entry.getValue().toString(), MatchMode.ANYWHERE));
+                        cr2.add(Restrictions.like(entry.getKey(), entry.getValue().toString(), MatchMode.ANYWHERE));
+                    }else {
+                        cr.add(Restrictions.eq(entry.getKey(), entry.getValue()));
+                        cr2.add(Restrictions.eq(entry.getKey(), entry.getValue()));
+                    }
                 }
             }
 
@@ -131,15 +142,6 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             list = cr.list();
 
 //            count total of items
-            Criteria cr2 = session.createCriteria(this.getPersistenceClass());
-
-//            set condition for query
-            if (properties != null) {
-                for (Map.Entry<String, Object> entry : properties.entrySet()) {
-                    cr2.add(Restrictions.eq(entry.getKey(), entry.getValue()));
-                }
-            }
-
 //            set result is a num row of list
             cr2.setProjection(Projections.rowCount());
             count = (Long) cr2.uniqueResult();
@@ -150,58 +152,16 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
     }
 
     @Override
-    public Object[] findApproximateByProperties(Map<String, String> properties, String sortExpression, String sortDirection, Integer offset, Integer limit) {
-        List list;
-        Long count;
-        Session session = this.getSession();
-        try {
-            Criteria cr = session.createCriteria(this.getPersistenceClass());
-
-//            set condition for query
-            if (properties != null) {
-                for (Map.Entry<String, String> entry : properties.entrySet()) {
-                    cr.add(Restrictions.like(entry.getKey(), entry.getValue(), MatchMode.ANYWHERE));
-                }
-            }
-
-//            set sort direction
-            if (sortExpression != null && sortDirection != null) {
-                Order order = sortDirection.equals(CoreConstant.SORT_ASC) ?
-                        Order.asc(sortExpression) : Order.desc(sortExpression);
-                cr.addOrder(order);
-            }
-
-//            set start position offset
-            if (offset != null && offset >= 0) {
-                cr.setFirstResult(offset);
-            }
-
-//            set limit row
-            if (limit != null && limit > 0) {
-                cr.setMaxResults(limit);
-            }
-
-            list = cr.list();
-
-//            count total of items
-            Criteria cr2 = session.createCriteria(this.getPersistenceClass());
-
-//            set condition for query
-            if (properties != null) {
-                for (Map.Entry<String, String> entry : properties.entrySet()) {
-                    cr2.add(Restrictions.like(entry.getKey(), entry.getValue(), MatchMode.ANYWHERE));
-                }
-            }
-
-//            set result is a num row of list
-            cr2.setProjection(Projections.rowCount());
-            count = (Long) cr2.uniqueResult();
-        } finally {
-            session.close();
-        }
-        return new Object[]{count, list};
+    public Object[] findApproximateByProperties(Map<String, Object> properties, String sortExpression, String sortDirection, Integer offset, Integer limit) {
+        return this.findByProperties(properties, sortExpression, sortDirection,  offset, limit, true);
     }
 
+    @Override
+    public Object[] findExactlyByProperties(Map<String, Object> properties, String sortExpression, String sortDirection, Integer offset, Integer limit) {
+        return this.findByProperties(properties, sortExpression, sortDirection, offset, limit, false);
+    }
+
+    @Override
     public Integer delete(List<ID> idList) {
         Session session = this.getSession();
         Transaction transaction = session.beginTransaction();

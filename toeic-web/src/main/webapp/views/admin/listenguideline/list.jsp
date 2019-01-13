@@ -105,7 +105,7 @@
                     </div>
                     <div class="table-responsive">
                         <form id="formDelete" action="${listenGuidelineSearchUrl}" method="get">
-                            <fmt:bundle basename="ApplicationResources">
+                            <fmt:bundle basename="ResourceBundle">
                                 <display:table id="tableList" name="items.listResult" partialList="true"
                                                size="${items.totalItems}" pagesize="${items.maxPageItems}"
                                                class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"

@@ -23,7 +23,7 @@ import java.util.*;
 @WebServlet(urlPatterns = {"/admin-guideline-listen-list.html", "/admin-guideline-listen-edit.html"})
 public class ListenGuidelineController extends HttpServlet {
     private final Logger logger = Logger.getLogger(this.getClass());
-    ResourceBundle resourceBundle = ResourceBundle.getBundle("ApplicationResources");
+    ResourceBundle resourceBundle = ResourceBundle.getBundle("ResourceBundle");
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -79,14 +79,14 @@ public class ListenGuidelineController extends HttpServlet {
 
     private void executeSearch(HttpServletRequest req, ListenGuidelineCommand command) {
         RequestUtil.initSearchBean(req, command);
-        Map<String, String> propertiesMap = buildPropertiesMap(command);
+        Map<String, Object> propertiesMap = buildPropertiesMap(command);
         Object[] objects = SingletonServiceUtil.getListenGuidelineServiceInstance().findApproximateByProperties(propertiesMap, command.getSortExpression(), command.getSortDirection(), command.getFirstItem(), command.getMaxPageItems());
         command.setListResult((List<ListenGuidelineDTO>) objects[1]);
         command.setTotalItems(Integer.parseInt(objects[0].toString()));
     }
 
-    private Map<String, String> buildPropertiesMap(ListenGuidelineCommand command) {
-        Map<String, String> propertiesMap = new HashMap<>();
+    private Map<String, Object> buildPropertiesMap(ListenGuidelineCommand command) {
+        Map<String, Object> propertiesMap = new HashMap<>();
         if (StringUtils.isNotBlank(command.getPojo().getTitle())) {
             propertiesMap.put("title", command.getPojo().getTitle());
         }
