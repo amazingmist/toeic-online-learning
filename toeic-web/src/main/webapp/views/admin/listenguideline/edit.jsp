@@ -97,6 +97,7 @@
                             <textarea class="form-control" rows="20" id="guidelineContent"
                                       name="pojo.content">${item.pojo.content}</textarea>
                         </div>
+                        <input type="hidden" name="crudAction" value="crud_action_update">
                         <button type="submit" class="btn btn-default btn-sm"><fmt:message key="label.done"
                                                                                           bundle="${lang}"/></button>
                     </form>

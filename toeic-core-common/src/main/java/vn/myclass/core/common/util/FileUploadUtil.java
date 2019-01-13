@@ -1,102 +1,93 @@
 package vn.myclass.core.common.util;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import vn.myclass.core.common.constant.CoreConstant;
 
-import javax.servlet.ServletContext;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import java.io.File;
-import java.io.UnsupportedEncodingException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2,
+        maxFileSize = 1024 * 1024 * 10,
+        maxRequestSize = 1024 * 1024 * 50)
 public class FileUploadUtil {
     private final Logger logger = Logger.getLogger(this.getClass());
     private final int MAX_MEMORY_SIZE = 1024 * 1024 * 3; // 3MB
     private final int MAX_REQUEST_SIZE = 1024 * 1024 * 50; // 50MB
 
-    public Object[] writeOrUpdateFile(HttpServletRequest request, Set<String> titleValueSet, String path) {
-        ServletContext servletContext = request.getServletContext();
-        String address = servletContext.getRealPath("file_upload");
+    private Set<String> fileExtensionSet;
 
-//        those are all return value in this method
-        boolean isSuccess;
-        String fileLocation = "";
+    public FileUploadUtil() {
+        this.fileExtensionSet = new HashSet<>();
+        this.setUploadFileIsImage();
+    }
+
+    public void setUploadFileIsImage() {
+        fileExtensionSet.clear();
+        fileExtensionSet.add("png");
+        fileExtensionSet.add("jpg");
+        fileExtensionSet.add("jpeg");
+        fileExtensionSet.add("gif");
+    }
+
+    public void setUploadFileIsExcel() {
+        fileExtensionSet.clear();
+        fileExtensionSet.add("xls");
+        fileExtensionSet.add("xlsx");
+    }
+
+    public void addUploadFileExtension(String extension) {
+        fileExtensionSet.add(extension);
+    }
+
+    public Map<String, String> writeOrUpdateFile(HttpServletRequest request, String partName, String path) throws Exception {
+        Map<String, String> fileInfoMap = new HashMap();
+
+//        these are all return value in this method
         String fileName = "";
-        Map<String, String> returnValueMap = new HashMap<>();
+        String fileLocation = "";
 
-        // Check that we have a file upload request
-        isSuccess = ServletFileUpload.isMultipartContent(request);
+        Path uploadPath = Paths.get(request.getServletContext().getRealPath(CoreConstant.BASE_UPLOAD_FOLDER), path);
 
-        // Create a factory for disk-based file items
-        DiskFileItemFactory factory = new DiskFileItemFactory();
+        Part part = request.getPart(partName);
+        fileName = part.getSubmittedFileName();
+//        Convert to ascii string
+        fileName = StringUtil.covertUnicodeToASCIIString(fileName);
+        Path uploadFilePath = Paths.get(uploadPath.toString(), fileName);
 
-        // Set factory constraints
-        factory.setSizeThreshold(MAX_MEMORY_SIZE);
-        factory.setRepository(new File(System.getProperty("java.io.tmpdir")));
+//            check accepted extension
+        String fileExtension = FilenameUtils.getExtension(uploadFilePath.toString());
+        if (fileExtensionSet.contains(fileExtension)) {
+            createFolderIfNotExisted(uploadPath);
 
-        // Create a new file upload handler
-        ServletFileUpload servletFileUpload = new ServletFileUpload(factory);
+            part.write(uploadFilePath.toString());
 
-        // Set overall request size constraint
-        servletFileUpload.setSizeMax(MAX_REQUEST_SIZE);
-
-        // Parse the request
-        List<FileItem> items = null;
-        try {
-            items = servletFileUpload.parseRequest(request);
-        } catch (FileUploadException e) {
-            logger.error(e.getMessage(), e);
-            isSuccess = false;
-        }
-
-        if (items != null && items.size() > 0) {
-            for (FileItem item : items) {
-//            check if this field is a file upload and it have a submitted file
-                if (!item.isFormField() && StringUtils.isNotBlank(item.getName())) {
-                    File uploadedFile = new File(address + File.separator + path, item.getName());
-                    fileLocation = uploadedFile.getAbsolutePath();
-                    fileName = uploadedFile.getName();
-
-//                check if this file is already existed
-                    try {
-                        uploadedFile.delete();
-                        item.write(uploadedFile);
-                    } catch (Exception e) {
-                        logger.error(e.getMessage(), e);
-                        isSuccess = false;
-                        fileLocation = null;
-                        fileName = null;
-                    }
-                } else if (item.isFormField()) {
-//                this file is not a file upload
-                    if (titleValueSet != null) {
-                        String fieldName = item.getFieldName();
-                        String fieldValue = item.getString();
-                        try {
-                            fieldValue = item.getString("UTF-8");
-                        } catch (UnsupportedEncodingException e) {
-                            isSuccess = false;
-                            e.printStackTrace();
-                        }
-
-//                    check if this field is required return
-                        if (titleValueSet.contains(fieldName)) {
-                            returnValueMap.put(fieldName, fieldValue);
-                        }
-                    }
-                }
+            fileLocation = uploadFilePath.toString();
+        } else {
+            if (StringUtils.isNotBlank(fileExtension)) {
+                throw new UnsupportedOperationException();
             }
-        }else{
-            isSuccess = false;
         }
 
-        return new Object[]{isSuccess, fileLocation, fileName, returnValueMap};
+        fileInfoMap.put("fileName", fileName);
+        fileInfoMap.put("fileLocation", fileLocation);
+
+        return fileInfoMap;
+    }
+
+    private void createFolderIfNotExisted(Path path) {
+        File folder = path.toFile();
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
     }
 }

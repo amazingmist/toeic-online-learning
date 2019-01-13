@@ -26,7 +26,7 @@
                     <label class="block clearfix">
                      <span class="block input-icon input-icon-right">
                      <%-- input name must the same with property in UserDTO --%>
-                     <input type="text" class="form-control" placeholder="Username" name="pojo.name"/>
+                     <input type="text" class="form-control" placeholder="Username" value="${param['pojo.name']}" name="pojo.name"/>
                      <i class="ace-icon fa fa-user"></i>
                      </span>
                     </label>

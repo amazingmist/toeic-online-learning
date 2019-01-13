@@ -15,11 +15,15 @@ public class WebConstant {
     public static final String URL_VALIDATE_IMPORT = "url_validate_import";
     public static final String URL_SHOW_VALIDATE_IMPORT = "url_show_validate_import";
     public static final String LISTEN_GUIDELINE_IMAGE_URL = "listenguideline";
-    public static final String INSERT_UPDATE_ACTION = "insert_update";
+    public static final String UPLOAD_PART_NAME = "file";
+    public static final String UPLOAD_EXCEL_PATH = "excel";
     public static final String REDIRECT_INSERT = "redirect_insert";
     public static final String REDIRECT_UPDATE = "redirect_update";
     public static final String REDIRECT_DELETE = "redirect_delete";
     public static final String REDIRECT_ERROR = "redirect_error";
+    public static final String CRUD_ACTION_INSERT = "crud_action_insert";
+    public static final String CRUD_ACTION_UPDATE = "crud_action_update";
+    public static final String CRUD_ACTION_DELETE = "crud_action_delete";
 
 
 }

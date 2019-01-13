@@ -170,7 +170,7 @@
         function addEditFormEvent() {
             $('#editUserForm').submit(function (evt) {
                 evt.preventDefault();
-                $('#crudActionEdit').val('insert_update');
+                $('#crudActionEdit').val('crud_action_update');
                 submitEditForm();
             });
         }

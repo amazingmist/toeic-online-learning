@@ -26,16 +26,16 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserCommand command = FormUtil.populate(UserCommand.class, req);
-        UserDTO pojo = command.getPojo();
         try {
+            UserCommand command = FormUtil.populate(UserCommand.class, req);
+            UserDTO pojo = command.getPojo();
             UserDTO userDTO = SingletonServiceUtil.getUserServiceInstance().findByNameAndPassword(pojo.getName(), pojo.getPassword());
             if (userDTO.getRoleDTO().getName().equals(WebConstant.ROLE_ADMIN)) {
                 resp.sendRedirect("/admin-home.html");
             } else if (userDTO.getRoleDTO().getName().equals(WebConstant.ROLE_USER)) {
                 resp.sendRedirect("/home.html");
             }
-        } catch (NullPointerException ex) {
+        } catch (Exception ex) {
             ResourceBundle resourceBundle = ResourceBundle.getBundle("ResourceBundle");
             logger.error(ex.getMessage(), ex);
             req.setAttribute(WebConstant.ALERT, WebConstant.TYPE_ERROR);
