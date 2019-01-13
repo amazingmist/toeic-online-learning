@@ -49,14 +49,14 @@ public class FileUploadUtil {
         fileExtensionSet.add(extension);
     }
 
-    public Map<String, String> writeOrUpdateFile(HttpServletRequest request, String partName, String path) throws Exception {
+    public Map<String, String> writeOrUpdateFile(HttpServletRequest request, String partName, String parentPath) throws Exception {
         Map<String, String> fileInfoMap = new HashMap();
 
 //        these are all return value in this method
         String fileName = "";
         String fileLocation = "";
 
-        Path uploadPath = Paths.get(request.getServletContext().getRealPath(CoreConstant.BASE_UPLOAD_FOLDER), path);
+        Path uploadPath = Paths.get(CoreConstant.BASE_UPLOAD_PATH, parentPath);
 
         Part part = request.getPart(partName);
         fileName = part.getSubmittedFileName();
@@ -78,7 +78,9 @@ public class FileUploadUtil {
             }
         }
 
+        String uploadFileUrl = uploadFilePath.toString();
         fileInfoMap.put("fileName", fileName);
+        fileInfoMap.put("parentAndFileName", uploadFileUrl.substring(uploadFileUrl.lastIndexOf(parentPath)));
         fileInfoMap.put("fileLocation", fileLocation);
 
         return fileInfoMap;
@@ -87,7 +89,7 @@ public class FileUploadUtil {
     private void createFolderIfNotExisted(Path path) {
         File folder = path.toFile();
         if (!folder.exists()) {
-            folder.mkdir();
+            folder.mkdirs();
         }
     }
 }

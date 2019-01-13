@@ -88,7 +88,7 @@ public class ListenGuidelineController extends HttpServlet {
             if (command.getCrudAction().equals(WebConstant.CRUD_ACTION_UPDATE)) {
                 Map<String, String> fileInfoMap = fileUploadUtil.writeOrUpdateFile(req, WebConstant.UPLOAD_PART_NAME, WebConstant.LISTEN_GUIDELINE_IMAGE_URL);
                 if (StringUtils.isNotBlank(fileInfoMap.get("fileName"))) {
-                    pojo.setImage(fileInfoMap.get("fileName"));
+                    pojo.setImage(fileInfoMap.get("parentAndFileName"));
                 }
 
                 if (pojo.getListenGuideLineId() != null) {

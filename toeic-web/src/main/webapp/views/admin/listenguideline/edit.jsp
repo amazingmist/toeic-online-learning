@@ -85,7 +85,7 @@
                             <input type="file" id="guidelineImage" name="file">
                             <div class="imagePreviewWrapper">
                                 <c:if test="${not empty item.pojo.image}">
-                                    <c:url value="/file_upload/listenguideline/${item.pojo.image}"
+                                    <c:url value="/repository/${item.pojo.image}"
                                            var="imageUrl"></c:url>
                                 </c:if>
                                 <img src="${imageUrl}" alt="" id="imagePreview">
